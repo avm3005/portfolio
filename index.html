@@ -275,16 +275,22 @@
 
 
         /* ==========================================================================
-        HORIZONTAL SCROLL PROJECTS SECTION (Updated Height for Pause)
+        HORIZONTAL SCROLL PROJECTS SECTION (Redesigned Loading)
         ========================================================================= */
         #projects { height: 500dvh; padding: 0; display: block; scroll-snap-align: none; } 
         .projects-sticky { position: sticky; top: 0; height: 100dvh; width: 100vw; overflow: hidden; display: flex; align-items: center; }
         .projects-track { display: flex; height: 85dvh; width: 300vw; transform: translate3d(0,0,0); backface-visibility: hidden; }
         .project-slide { width: 100vw; height: 100%; display: flex; align-items: center; justify-content: center; padding: 0 4rem; transform: translate3d(0,0,0); backface-visibility: hidden; }
-        .project-card { cursor: pointer !important; width: 100%; max-width: 1300px; height: 100%; border-radius: 32px; overflow: hidden; position: relative; border: 1px solid rgba(255,255,255,0.1); background: #111; transform: translate3d(0,0,0); transition: transform 0.4s var(--ease-poppy), box-shadow 0.4s; backface-visibility: hidden; }
-        .project-card:hover { transform: translateY(-10px) scale(1.02); box-shadow: 0 30px 60px rgba(0,0,0,0.5); border-color: var(--accent); }
-        .project-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; z-index: 1; transform: translate3d(0,0,0); transition: transform 0.5s ease; }
-        .project-card:hover .project-bg { transform: scale(1.05); }
+        
+        /* Added hardware acceleration optimizations for card */
+        .project-card { cursor: pointer !important; width: 100%; max-width: 1300px; height: 100%; border-radius: 32px; overflow: hidden; position: relative; border: 1px solid rgba(255,255,255,0.1); background: #111; transform: translate3d(0,0,0); transition: transform 0.4s var(--ease-poppy), box-shadow 0.4s; backface-visibility: hidden; will-change: transform; }
+        .project-card:hover { transform: translateY(-10px) scale(1.02) translateZ(0); box-shadow: 0 30px 60px rgba(0,0,0,0.5); border-color: var(--accent); }
+        
+        /* Updated image loading logic (hidden initially, fade in after async load) */
+        .project-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; z-index: 1; transform: translate3d(0,0,0); transition: transform 0.5s ease, opacity 0.8s ease; opacity: 0; will-change: transform, opacity; }
+        .project-bg.loaded { opacity: 1; }
+        .project-card:hover .project-bg { transform: scale(1.05) translateZ(0); }
+        
         .project-gradient { position: absolute; inset: 0; background: linear-gradient(to right, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.8) 55%, transparent 100%); z-index: 2; }
         .project-content { position: relative; z-index: 3; padding: 5rem; width: 80%; max-width: 900px; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; text-align: left; color: #ffffff; pointer-events: none; }
         .project-title { font-size: clamp(2rem, 5vw, 4.5rem); margin-bottom: 1rem; font-weight: 400; letter-spacing: 0.02em; text-shadow: 0 4px 20px rgba(0,0,0,0.5); text-transform: uppercase; }
@@ -661,32 +667,35 @@
     <section id="projects" class="mono-bg">
         <div class="projects-sticky">
             <div class="projects-track" id="projects-track">
+                
                 <div class="project-slide">
                     <div class="project-card" data-index="0">
-                        <!-- Converted div to lazy-loaded img -->
-                        <img class="project-bg" src="./Resources/Projects/AutoDM/bg.png" alt="AutoDM Background" loading="lazy" decoding="async">
+                        <!-- Ultra-lightweight preloaded pattern: transparent base64 GIF prevents HTML blocking -->
+                        <img class="project-bg" data-preload="./Resources/Projects/AutoDM/bg.png" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="AutoDM Background" decoding="async">
                         <div class="project-gradient"></div>
                         <div class="project-content">
                             <h3 class="project-title">AutoDM</h3>
-                            <p class="project-desc">A small lightweight app for windows that enables scheduled dark mode without using resources in background</p>
+                            <p class="project-desc">A small lightweight script for windows that enables scheduled dark mode without using resources in background having multiple users accross the globe</p>
                         </div>
                     </div>
                 </div>
+                
                 <div class="project-slide">
                     <div class="project-card" data-index="1">
-                        <!-- Converted div to lazy-loaded img -->
-                        <img class="project-bg" src="./Resources/Projects/TradeApp/bg.png" alt="TradeApp Background" loading="lazy" decoding="async">
+                        <!-- Ultra-lightweight preloaded pattern: transparent base64 GIF prevents HTML blocking -->
+                        <img class="project-bg" data-preload="./Resources/Projects/AMBS/bg.png" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="TradeApp Background" decoding="async">
                         <div class="project-gradient"></div>
                         <div class="project-content">
-                            <h3 class="project-title">The TradeAPP</h3>
-                            <p class="project-desc">A risk-free website for virtual trading in Indian markets</p>
+                            <h3 class="project-title">AMBS</h3>
+                            <p class="project-desc">A smart inventory & financial management platform with lightning fast billing for retail and warehouse businesses</p>
                         </div>
                     </div>
                 </div>
+                
                 <div class="project-slide">
                     <div class="project-card" data-index="2">
-                        <!-- Converted div to lazy-loaded img -->
-                        <img class="project-bg" src="./Resources/Projects/FSPro/bg.png" alt="FSPro Background" loading="lazy" decoding="async">
+                        <!-- Ultra-lightweight preloaded pattern: transparent base64 GIF prevents HTML blocking -->
+                        <img class="project-bg" data-preload="./Resources/Projects/FSPro/bg.png" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="FSPro Background" decoding="async">
                         <div class="project-gradient"></div>
                         <div class="project-content">
                             <h3 class="project-title">File Safe Pro</h3>
@@ -694,6 +703,7 @@
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </section>
@@ -720,7 +730,7 @@
                             <h4 class="resume-role">Societal Internship</h4>
                             <p class="resume-company">Sagar Steel, Vapi</p>
                             <ul class="resume-bullets">
-                                <li>Developed and implemented an efficient inventory management system to track and manage inventory, generate bills and optimize the process of communication between vender and client</li>
+                                <li>Led a team, visited the warehouse to understand how everything worked, and built ABMS: an easy to use system for managing inventory and customer billing.</li>
                             </ul>
                         </div>
                         <div class="resume-item">
@@ -1118,17 +1128,10 @@
                 <div class="fs-card" style="max-width: 600px; width: 100%; align-items: center; text-align: center; padding: 4rem 2rem;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 1.5rem;"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></svg>
                     <h5 id="ref-modal-name" style="font-family: var(--font-serif); font-size: 2.5rem; color: var(--accent); margin-bottom: 0.5rem; font-style: italic;">Name</h5>
-                    <p id="ref-modal-role" style="font-family: var(--font-sans); color: var(--text-main); font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; margin-top: 0; margin-bottom: 3rem;">Role</p>
+                    <p id="ref-modal-role" style="font-family: var(--font-sans); color: var(--text-main); font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; margin-top: 0; margin-bottom: 2rem;">Role</p>
                     
                     <div style="display: flex; flex-direction: column; gap: 1rem; width: 100%;">
-                        <button id="ref-copy-email" class="fs-card-action" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 0.75rem; background: var(--glass-bg); color: var(--text-main); border: 1px solid var(--glass-border); cursor: pointer;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-                            <span id="ref-email-text" style="font-family: var(--font-mono); text-transform: none; font-size: 1.1rem; font-weight: 700;">email</span>
-                        </button>
-                        <button id="ref-copy-phone" class="fs-card-action" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 0.75rem; background: var(--glass-bg); color: var(--text-main); border: 1px solid var(--glass-border); cursor: pointer;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-                            <span id="ref-phone-text" style="font-family: var(--font-mono); text-transform: none; font-size: 1.1rem; font-weight: 700;">phone</span>
-                        </button>
+                        <p id="ref-desc-text" style="font-family: var(--font-sans); color: var(--text-muted); font-size: 1.15rem; line-height: 1.6; margin: 0 auto; max-width: 500px; text-transform: none;">Description goes here.</p>
                     </div>
                 </div>
             </div>
@@ -1378,6 +1381,29 @@
             });
         });
 
+        // =========================================================
+        // LIGHTWEIGHT ASYNC PROJECT PHOTO PRELOADER
+        // =========================================================
+        document.addEventListener('DOMContentLoaded', () => {
+            const projectImages = document.querySelectorAll('.project-bg[data-preload]');
+            projectImages.forEach(img => {
+                const src = img.getAttribute('data-preload');
+                if (src) {
+                    const tempImg = new Image();
+                    // decoding async prevents the main thread from blocking when processing the large pixels
+                    tempImg.decoding = 'async'; 
+                    tempImg.onload = () => {
+                        requestAnimationFrame(() => {
+                            img.src = src;
+                            img.classList.add('loaded'); // Fades image in smoothly
+                        });
+                    };
+                    // Immediately fetch it in background directly after initialization
+                    tempImg.src = src; 
+                }
+            });
+        });
+
         // TIME STATS
         function calculateAge(dobString) {
             const dob = new Date(dobString);
@@ -1513,24 +1539,24 @@
         
         const PROJECT_LINKS = [
             "https://github.com/avm3005/detaroxzAutoDM",
-            "https://knowaboutarchit.xo.je/tradeapp.html?i=1",
+            "https://avm3005.github.io/AMBS",
             "\\Projects\\FSPro\\down.zip"
         ];
         const PROJECT_TEXTS = [
-            "Visit Github",
-            "Visit TradeApp",
+            "View on Github",
+            "Visit AMBS",
             "Download FSPro"
         ];
 
-        // 7 FULL TIMELINE EVENTS
+        // 7 FULL TIMELINE EVENTS (Replaced contact info with short description)
         const timelineData = [
-            { year: "2006", title: "Born in Vapi", desc: "Born in Vapi on 30 May 2006.", refName: "Parents", refRole: "Family", refEmail: "vmishra020@gmail.com", refPhone: "+91 80000 12011" },
-            { year: "2020", title: "Secondary", desc: "Completed 10th in April 2020 from Ashadham School Vapi.", refName: "Principal", refRole: "Ashadham School", refEmail: "support@motherofhopeschool.com", refPhone: "+91 96246 58114" },
-            { year: "2022", title: "Higher Secondary", desc: "Graduated from Upasana Lions School, Vapi with the highest percentage of marks in the entire school", refName: "Ms. Mayuri Shah", refRole: "Cordinator of Science Department, Upasana Lions", refEmail: "principal@upasanalions.edu", refPhone: "+91 94275 75497" },
-            { year: "2024", title: "Bachelor of Engineering", desc: "Started studying Computer Engineering at Dr. S. & S.S. Ghandhy Govt. Engineering College", refName: "Prof. Hardik Makwana", refRole: "HOD Computer Eng.", refEmail: "hardik@gecsurat.edu", refPhone: "+91 94276 27033" },
-            { year: "2025", title: "First Commit", desc: "Made first GitHub commit on November 8th 2025.", refName: "GitHub Platform", refRole: "Repository", refEmail: "-", refPhone: "-" },
-            { year: "2026", title: "Societal Internship", desc: "Developed an efficient inventory management system at Sagar Steel, Vapi", refName: "Mr. Dinesh Chodhury", refRole: "Owner, Sagar Steel", refEmail: "johndoe@sagarsteel.com", refPhone: "+91 98765 43210" },
-            { year: "Present", title: "Continuing B.E.", desc: "Resumed studies in Computer Engineering in Dr. S. & S.S. Ghandhy Govt. Engineering College", refName: "Prof. Hardik Makwana", refRole: "Project Guide", refEmail: "akpatel@gecsurat.edu", refPhone: "+91 94276 27033" }
+            { year: "2006", title: "Born in Vapi", desc: "Born in Vapi on 30 May 2006.", refName: "Parents", refRole: "Family", refDesc: "I really don'tknow why you will need this but if you do, then it will be provided after contact." },
+            { year: "2020", title: "Secondary", desc: "Completed 10th in April 2020 from Ashadham School Vapi.", refName: "Principal", refRole: "Ashadham School", refDesc: "Information available after contact." },
+            { year: "2022", title: "Higher Secondary", desc: "Graduated from Upasana Lions School, Vapi with the highest percentage of marks in the entire school", refName: "Ms. Mayuri Shah", refRole: "Cordinator of Science Department, Upasana Lions", refDesc: "Guided me through 11th and 12th. Information will be provided after contact." },
+            { year: "2024", title: "Bachelor of Engineering", desc: "Started studying Computer Engineering at Dr. S. & S.S. Ghandhy Govt. Engineering College", refName: "Prof. Hardik Makwana", refRole: "HOD Computer Eng.", refDesc: "Guided me throughout college. Information will be provided after contact." },
+            { year: "2025", title: "First Commit", desc: "Made first GitHub commit on November 8th 2025.", refName: "GitHub Platform", refRole: "What do you even expect here!", refDesc: "The platform where I started building my open-source footprint." },
+            { year: "2026", title: "Societal Internship", desc: "Developed an efficient inventory management system at Sagar Steel, Vapi", refName: "Mr. Dinesh Chodhury", refRole: "Owner, Sagar Steel", refDesc: "Provided the industry problem statement and supervised the deployment of the ABMS inventory system." },
+            { year: "Present", title: "Continuing B.E.", desc: "Resumed studies in Computer Engineering in Dr. S. & S.S. Ghandhy Govt. Engineering College", refName: "Prof. Hardik Makwana", refRole: "Project Guide", refDesc: "Guided me throughout college. Information will be provided after contact." }
         ];
         let currentTimelineIndex = -1;
 
@@ -1802,18 +1828,6 @@
             });
         });
 
-        function copyToClipboard(text, btnElement) {
-            const span = btnElement.querySelector('span');
-            const og = span.innerText;
-            const exec = () => {
-                let ta = document.createElement("textarea"); ta.value = text;
-                ta.style.cssText = "position:fixed;left:-9999px;top:-9999px";
-                document.body.appendChild(ta); ta.focus(); ta.select(); document.execCommand('copy'); ta.remove();
-            };
-            (navigator.clipboard && window.isSecureContext) ? navigator.clipboard.writeText(text).catch(exec) : exec();
-            span.innerText = "Copied!"; setTimeout(() => { span.innerText = og; }, 2000);
-        }
-
         // Detailed Project Actions
         const PROJECT_DETAILS = [
             {
@@ -1926,10 +1940,7 @@
                 const d = timelineData[Math.max(0, currentTimelineIndex)];
                 document.getElementById('ref-modal-name').innerText = d.refName;
                 document.getElementById('ref-modal-role').innerText = d.refRole;
-                document.getElementById('ref-email-text').innerText = d.refEmail;
-                document.getElementById('ref-phone-text').innerText = d.refPhone;
-                document.getElementById('ref-copy-email').onclick = function() { copyToClipboard(d.refEmail, this); };
-                document.getElementById('ref-copy-phone').onclick = function() { copyToClipboard(d.refPhone, this); };
+                document.getElementById('ref-desc-text').innerText = d.refDesc;
                 openModal('references-modal');
             });
         }
