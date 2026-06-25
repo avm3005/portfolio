@@ -284,7 +284,7 @@
         
         /* Added hardware acceleration optimizations for card */
         .project-card { cursor: pointer !important; width: 100%; max-width: 1300px; height: 100%; border-radius: 32px; overflow: hidden; position: relative; border: 1px solid rgba(255,255,255,0.1); background: #111; transform: translate3d(0,0,0); transition: transform 0.4s var(--ease-poppy), box-shadow 0.4s; backface-visibility: hidden; will-change: transform; }
-        .project-card:hover { transform: translateY(-10px) scale(1.02) translateZ(0); box-shadow: 0 30px 60px rgba(0,0,0,0.5); border-color: var(--accent); }
+        .project-card:hover { transform: translateY(-10px) scale(1.02) translateZ(0); box-shadow: 0 30px 60px rgba(0,0,0,0.5); }
         
         /* Updated image loading logic (hidden initially, fade in after async load) */
         .project-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; z-index: 1; transform: translate3d(0,0,0); transition: transform 0.5s ease, opacity 0.8s ease; opacity: 0; will-change: transform, opacity; }
@@ -640,14 +640,28 @@
                     <h2 class="about-massive-text">
                         Building <span class="serif-italic" style="color: var(--accent);">Proof,</span><br>Not Excuses.
                     </h2>
-                    <p class="about-desc">
-                        I'm a Computer Engineering student driven by curiosity and a stubbornness to build. Every project here is proof that consistent effort creates tangible results. I believe in writing clean code and intuitive experiences.
-                    </p>
+                    <p class="about-desc" id="randomized-quote">
+                                            </p>
+                    <script>
+                        (function() {
+                            const quotes = [
+                                "I debug life by adding more bugs until the original one feels lonely",
+                                "My code has two modes: Nobel Prize or nuclear accident",
+                                "I write code so confusing even future me files bug reports",
+                                "Sleep is just my CPU entering low-power mode",
+                                "I don't make mistakes. I create undocumented features for character development",
+                                "The only thing faster than my code is my confidence before production",
+                                "God gave me free will. I gave it infinite loops"
+                            ];
+                            const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+                            document.getElementById('randomized-quote').innerHTML = `"${randomQuote}" - Archit Mishra`;
+                        })();
+                    </script>
                     <hr class="about-divider">
                     <div class="about-stats-row">
                         <div class="about-stat-item">
                             <span class="about-stat-label">Location</span>
-                            <span class="about-stat-val">Vapi, IN</span>
+                            <span class="about-stat-val">Surat, IN</span>
                         </div>
                         <div class="about-stat-item">
                             <span class="about-stat-label">Age</span>
