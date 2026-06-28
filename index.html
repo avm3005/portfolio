@@ -6,40 +6,43 @@
     <title>Archit Mishra - Portfolio</title>
     <link rel="icon" type="image/png" href="Resources/Logo/logo.png">
     
-    <!-- Editorial & Modern Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Anton&family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&family=Space+Grotesk:wght@400;500;600;700&family=Manrope:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-
-    <!-- Confetti Library -->
+    
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
+    <!-- Dynamic Theming -->
     <script>
         (function() {
             const lightPalettes = [
-                { accent: '#1d1d1f', bg: '#f5f5f7', fg: '#ffffff' }, 
-                { accent: '#0071e3', bg: '#f0f7ff', fg: '#ffffff' },
-                { accent: '#34c759', bg: '#f0fdf4', fg: '#ffffff' },
-                { accent: '#ff9500', bg: '#fff8f0', fg: '#ffffff' },
-                { accent: '#af52de', bg: '#faf5ff', fg: '#ffffff' },
-                { accent: '#ff2d55', bg: '#fff0f3', fg: '#ffffff' },
-                { accent: '#00c7be', bg: '#e6fffe', fg: '#ffffff' } 
+                { accent: '#FF00FF', bg: '#FFF0FF', fg: '#ffffff' },
+                { accent: '#00FFFF', bg: '#F0FFFF', fg: '#000000' },
+                { accent: '#39FF14', bg: '#F0FFF0', fg: '#000000' },
+                { accent: '#FF3131', bg: '#FFF0F0', fg: '#ffffff' },
+                { accent: '#B026FF', bg: '#F8F0FF', fg: '#ffffff' },
+                { accent: '#FF6700', bg: '#FFF5F0', fg: '#ffffff' } 
             ];
             const darkPalettes = [
-                { accent: '#f5f5f7', bg: '#0a0a0c', fg: '#1d1d1f' }, 
-                { accent: '#2997ff', bg: '#05111f', fg: '#ffffff' },
-                { accent: '#32d74b', bg: '#051709', fg: '#ffffff' },
-                { accent: '#bf5af2', bg: '#160524', fg: '#ffffff' },
-                { accent: '#ff375f', bg: '#1f030a', fg: '#ffffff' },
-                { accent: '#64d2ff', bg: '#041721', fg: '#000000' } 
+                { accent: '#FF00FF', bg: '#1A001A', fg: '#ffffff' },
+                { accent: '#00FFFF', bg: '#001A1A', fg: '#000000' },
+                { accent: '#39FF14', bg: '#051A05', fg: '#000000' },
+                { accent: '#FF3131', bg: '#1A0505', fg: '#ffffff' },
+                { accent: '#B026FF', bg: '#120024', fg: '#ffffff' },
+                { accent: '#FF6700', bg: '#1A0A00', fg: '#ffffff' } 
             ];
+            
             function applyPalette(isDark) {
                 const palettes = isDark ? darkPalettes : lightPalettes;
                 const chosen = palettes[Math.floor(Math.random() * palettes.length)];
+                
                 document.documentElement.style.setProperty('--accent', chosen.accent);
-                document.documentElement.style.setProperty('--bg-color', chosen.bg);
+                document.documentElement.style.setProperty('--dynamic-bg', chosen.bg);
+                document.documentElement.style.setProperty('--fallback-bg', isDark ? '#000000' : '#ffffff');
+                document.documentElement.style.setProperty('--bg-color', 'var(--fallback-bg)');
                 document.documentElement.style.setProperty('--accent-fg', chosen.fg);
             }
+            
             const mq = window.matchMedia('(prefers-color-scheme: dark)');
             applyPalette(mq.matches);
             mq.addEventListener('change', e => applyPalette(e.matches));
@@ -47,9 +50,7 @@
     </script>
 
     <style>
-        /* ==========================================================================
-        1. CSS VARIABLES & THEMING
-        ========================================================================= */
+        /* --- CSS Variables & Theming --- */
         :root {
             --bg-color: #f5f5f7;
             --accent: #0071e3;
@@ -90,14 +91,7 @@
             }
         }
 
-        h1, h2, h3, h4, h5, h6, .hero-line-1, .hero-line-2, .hero-line-3, .about-massive-text, .stat-val, .generic-content h2, .dyn-btn, .project-title, .project-list-info h4, .resume-card-title, .contact-sidebar h3, .huge-text-link {
-            font-family: var(--font-heading);
-            text-transform: uppercase;
-        }
-
-        /* ==========================================================================
-        2. GLOBAL RESETS & CUSTOM CURSOR
-        ========================================================================= */
+        /* --- Global Resets & Typography --- */
         * { margin: 0; padding: 0; box-sizing: border-box; cursor: none !important; }
         
         html, body {
@@ -110,6 +104,12 @@
         }
         ::-webkit-scrollbar { display: none; width: 0; height: 0; }
 
+        h1, h2, h3, h4, h5, h6, .hero-line-1, .hero-line-2, .hero-line-3, .about-massive-text, .stat-val, .generic-content h2, .dyn-btn, .project-title, .project-list-info h4, .resume-card-title, .contact-sidebar h3, .huge-text-link {
+            font-family: var(--font-heading);
+            text-transform: uppercase;
+        }
+
+        /* --- Custom Cursor --- */
         #custom-cursor {
             position: fixed; top: 0; left: 0; width: 24px; height: 24px;
             background: var(--cursor-color); border-radius: 50%;
@@ -118,39 +118,26 @@
             transition: width 0.3s var(--ease-poppy), height 0.3s var(--ease-poppy), background-color 0.3s, border-radius 0.3s;
             will-change: transform, width, height;
         }
-
         .cursor-hover { width: 64px !important; height: 64px !important; background: var(--accent) !important; opacity: 0.4; }
         .cursor-text { width: 4px !important; height: 32px !important; border-radius: 2px !important; background: var(--accent) !important; opacity: 0.8; }
-
         @media (pointer: coarse) {
             #custom-cursor { display: none !important; }
             * { cursor: auto !important; }
         }
 
+        /* --- Utility Classes --- */
         .liquid-glass {
             background: var(--glass-bg); backdrop-filter: blur(25px) saturate(180%); -webkit-backdrop-filter: blur(25px) saturate(180%);
             border: 1px solid var(--glass-border); box-shadow: 0 12px 40px var(--glass-shadow), var(--glass-reflection); border-radius: 24px;
         }
-
         .poppy-anim { transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
-
-        /* Intro Animations */
-        .intro-pop {
-            display: inline-block; opacity: 0; transform: translateY(80px) scale(0.9);
-            animation: popInAnim 1s var(--ease-poppy) forwards; animation-delay: 2.0s; 
-        }
-        @keyframes popInAnim {
-            0% { opacity: 0; transform: translateY(80px) scale(0.9); }
-            100% { opacity: 1; transform: translateY(0) scale(1); }
-        }
-
         .skeleton {
             background: linear-gradient(90deg, var(--glass-bg) 25%, var(--glass-active) 50%, var(--glass-bg) 75%);
             background-size: 200% 100%; animation: skeleton-loading 1.5s infinite; border-radius: 8px; display: inline-block; opacity: 0.6;
         }
         @keyframes skeleton-loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 
-        /* Loader */
+        /* --- Intro Loader --- */
         #liquid-loader {
             position: fixed; inset: 0; z-index: 9999999;
             background: var(--bg-color); display: flex; align-items: center; justify-content: center; flex-direction: column;
@@ -173,37 +160,19 @@
         }
         .loader-hidden { opacity: 0 !important; visibility: hidden !important; pointer-events: none; }
         
-        /* Loader Tip */
         .loader-tip {
-            position: absolute;
-            bottom: 12%;
-            font-family: var(--font-mono);
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            opacity: 0;
-            animation: fadeInTip 0.3s ease forwards 0.2s;
+            position: absolute; bottom: 12%; font-family: var(--font-mono); font-size: 0.85rem;
+            color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em;
+            opacity: 0; animation: fadeInTip 0.3s ease forwards 0.2s;
         }
-        @keyframes fadeInTip {
-            to { opacity: 0.8; }
-        }
-        @media (max-width: 768px), (pointer: coarse) {
-            .loader-tip { display: none !important; }
-        }
+        @keyframes fadeInTip { to { opacity: 0.8; } }
+        @media (max-width: 768px), (pointer: coarse) { .loader-tip { display: none !important; } }
         .loader-tip kbd {
-            background: var(--glass-active);
-            border: 1px solid var(--glass-border);
-            border-radius: 6px;
-            padding: 0.2rem 0.5rem;
-            font-weight: 700;
-            color: var(--text-main);
-            font-family: inherit;
+            background: var(--glass-active); border: 1px solid var(--glass-border); border-radius: 6px;
+            padding: 0.2rem 0.5rem; font-weight: 700; color: var(--text-main); font-family: inherit;
         }
 
-        /* ==========================================================================
-        3. LAYOUT & SECTIONS
-        ========================================================================= */
+        /* --- Sections & Layout --- */
         .section {
             min-height: 100dvh; width: 100vw; position: relative;
             display: flex; align-items: center; justify-content: center;
@@ -211,82 +180,34 @@
         }
         .mono-bg { background-color: var(--section-bg); }
         .section-content { z-index: 10; width: 100%; max-width: 1200px; margin: 0 auto; }
-
         @media (min-width: 768px) { .section { padding: 6rem 2rem; } }
 
-        /* ==========================================================================
-        4. HOME SECTION
-        ========================================================================= */
+        /* --- Home Section --- */
         #home { overflow: hidden; padding: 0; align-items: stretch; display: flex; flex-direction: column; justify-content: center; }
         .hero-center-content { position: relative; z-index: 10; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; width: 100vw; padding: 0 4vw; }
         .hero-text-block { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; text-align: center; }
         .hero-line-1, .hero-line-3 { font-size: clamp(3rem, 11.5vw, 180px); line-height: 0.9; color: var(--text-main); letter-spacing: 0.02em; margin: 0; white-space: nowrap; transform: translate3d(0,0,0); }
         .hero-line-2 { font-family: var(--font-serif); font-size: clamp(2rem, 7.5vw, 120px); font-weight: 400; line-height: 0.9; color: var(--accent); text-transform: uppercase; font-style: italic; margin: -0.5vw 0; z-index: 2; position: relative; white-space: nowrap; transform: translate3d(0,0,0); }
+        
+        .intro-pop {
+            display: inline-block; opacity: 0; transform: translateY(80px) scale(0.9);
+            animation: popInAnim 1s var(--ease-poppy) forwards; animation-delay: 2.0s; 
+        }
+        @keyframes popInAnim {
+            0% { opacity: 0; transform: translateY(80px) scale(0.9); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
         @media (max-width: 768px) { .hero-line-2 { margin: 0; } }
 
-        /* ==========================================================================
-        5. ABOUT SECTION
-        ========================================================================= */
-        #about { display: block; height: 150dvh; padding: 0; }
-        .about-sticky { position: sticky; top: 0; height: 100dvh; width: 100vw; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-        .about-container { max-width: 1000px; width: 100%; margin: 0 auto; display: grid; grid-template-columns: 0.8fr 1.2fr; gap: 4rem; padding: 0 5vw; align-items: center; position: relative; }
-        
-        .about-image-wrapper { width: 100%; aspect-ratio: 4/5; border-radius: 24px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.3); border: 1px solid var(--glass-border); }
-        .about-avatar { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s var(--ease-poppy); transform: translateZ(0); }
-        .about-image-wrapper:hover .about-avatar { transform: scale(1.05) rotate(1deg); }
-
-        .about-text-content { display: flex; flex-direction: column; align-items: flex-start; }
-        .about-label { font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 1rem; font-weight: 700; }
-        .about-massive-text { font-size: clamp(2.5rem, 5vw, 4.5rem); line-height: 1.05; color: var(--text-main); margin: 0 0 1.5rem 0; letter-spacing: -0.01em; text-transform: uppercase; font-family: var(--font-heading); }
-        .about-massive-text .serif-italic { font-family: var(--font-serif); font-style: italic; text-transform: none; color: var(--accent); }
-        
-        .about-desc { font-size: 1.1rem; line-height: 1.6; color: var(--text-muted); max-width: 550px; font-family: var(--font-sans); margin-bottom: 2.5rem; }
-        
-        .about-divider { width: 100%; height: 1px; background: color-mix(in srgb, var(--glass-border) 50%, transparent); margin-bottom: 2rem; border: none; }
-        
-        .about-stats-row { display: flex; gap: 3rem; flex-wrap: wrap; }
-        .about-stat-item { display: flex; flex-direction: column; gap: 0.4rem; }
-        .about-stat-label { font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent); opacity: 0.8; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600; }
-        .about-stat-val { font-family: var(--font-sans); font-size: 1.1rem; color: var(--text-main); font-weight: 700; }
-
-        @media (max-width: 768px) {
-            .about-container { grid-template-columns: 1fr; gap: 3rem; text-align: center; }
-            .about-image-wrapper { max-width: 300px; margin: 0 auto; }
-            .about-text-content { align-items: center; }
-            .about-stats-row { justify-content: center; gap: 2rem; }
-            .about-stat-item { align-items: center; }
-        }
-
-        /* Enhanced Reveal Blocks */
-        .reveal-block {
-            transition: opacity 1.2s cubic-bezier(0.22, 1, 0.36, 1), transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
-        }
-        .out-view-bottom { opacity: 0; transform: translate3d(0, 60px, 0); }
-        .out-view-top { opacity: 0; transform: translate3d(0, -60px, 0); }
-        .in-view { opacity: 1; transform: translate3d(0, 0, 0); }
-
-        /* Highly Optimized Bouncy Reveal for About & Contact */
-        .bouncy-reveal {
-            transition: opacity 0.8s ease-out, transform 1.2s cubic-bezier(0.34, 1.8, 0.64, 1);
-        }
-        .bouncy-reveal.out-view-bottom { opacity: 0; transform: translate3d(0, 100px, 0) scale(0.95); }
-        .bouncy-reveal.out-view-top { opacity: 0; transform: translate3d(0, -100px, 0) scale(0.95); }
-        .bouncy-reveal.in-view { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
-
-
-        /* ==========================================================================
-        HORIZONTAL SCROLL PROJECTS SECTION (Redesigned Loading)
-        ========================================================================= */
+        /* --- Projects Section --- */
         #projects { height: 500dvh; padding: 0; display: block; scroll-snap-align: none; } 
         .projects-sticky { position: sticky; top: 0; height: 100dvh; width: 100vw; overflow: hidden; display: flex; align-items: center; }
         .projects-track { display: flex; height: 85dvh; width: 300vw; transform: translate3d(0,0,0); backface-visibility: hidden; }
         .project-slide { width: 100vw; height: 100%; display: flex; align-items: center; justify-content: center; padding: 0 4rem; transform: translate3d(0,0,0); backface-visibility: hidden; }
         
-        /* Added hardware acceleration optimizations for card */
         .project-card { cursor: pointer !important; width: 100%; max-width: 1300px; height: 100%; border-radius: 32px; overflow: hidden; position: relative; border: 1px solid rgba(255,255,255,0.1); background: #111; transform: translate3d(0,0,0); transition: transform 0.4s var(--ease-poppy), box-shadow 0.4s; backface-visibility: hidden; will-change: transform; }
         .project-card:hover { transform: translateY(-10px) scale(1.02) translateZ(0); box-shadow: 0 30px 60px rgba(0,0,0,0.5); }
         
-        /* Updated image loading logic (hidden initially, fade in after async load) */
         .project-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; z-index: 1; transform: translate3d(0,0,0); transition: transform 0.5s ease, opacity 0.8s ease; opacity: 0; will-change: transform, opacity; }
         .project-bg.loaded { opacity: 1; }
         .project-card:hover .project-bg { transform: scale(1.05) translateZ(0); }
@@ -305,17 +226,15 @@
             .project-desc { font-size: 1rem; }
         }
 
-        /* ==========================================================================
-        RESUME SECTION
-        ========================================================================= */
+        /* --- Resume Section --- */
         #resume { display: block; padding-top: 15dvh; padding-bottom: 10dvh; }
         .resume-layout { display: grid; grid-template-columns: 280px minmax(0, 850px); justify-content: center; align-items: start; gap: 4rem; width: 100%; max-width: 1300px; margin: 0 auto; position: relative; padding: 0; }
         .resume-sidebar { position: sticky; top: 20vh; width: 100%; justify-self: end; background: var(--glass-bg); backdrop-filter: blur(25px) saturate(180%); -webkit-backdrop-filter: blur(25px) saturate(180%); border: 1px solid var(--glass-border); padding: 2.5rem 2rem; border-radius: 24px; box-shadow: 0 12px 40px var(--glass-shadow); z-index: 10; }
         .resume-nav-list { list-style: none; display: flex; flex-direction: column; gap: 1.5rem; position: relative; padding-left: 0; }
         .resume-nav-list::before { content: ''; position: absolute; left: 12px; top: 16px; bottom: 16px; width: 2px; background: color-mix(in srgb, var(--text-main) 10%, var(--bg-color)); border-radius: 2px; transform: translateX(-50%); z-index: 0; }
         .resume-nav-link { color: var(--text-muted); text-decoration: none; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.05em; transition: padding-left 0.3s ease, color 0.3s ease, font-weight 0.3s ease; position: relative; display: flex; align-items: center; padding-left: 35px; font-weight: 500; min-height: 32px; }
-        .resume-nav-link:hover { color: var(--text-main); padding-left: 40px; }
-        .resume-nav-link.active { color: var(--text-main); font-weight: 700; padding-left: 40px; }
+        .resume-nav-link:hover, .resume-nav-link.active { color: var(--text-main); padding-left: 40px; }
+        .resume-nav-link.active { font-weight: 700; }
         .resume-nav-link::before { content: ''; position: absolute; left: 12px; top: 50%; transform: translate(-50%, -50%); width: 12px; height: 12px; background-color: color-mix(in srgb, var(--text-main) 20%, var(--bg-color)); border-radius: 50%; transition: all 0.3s ease; z-index: 2; box-sizing: border-box; }
         .resume-nav-link.active::before { background-color: var(--accent); box-shadow: 0 0 15px var(--accent); transform: translate(-50%, -50%) scale(1.3); border: 2px solid var(--bg-color); }
 
@@ -332,48 +251,103 @@
         .resume-bullets li::before { content: ''; position: absolute; left: 0; top: 0.6rem; width: 4px; height: 4px; background-color: var(--text-muted); border-radius: 50%; }
 
         @media (max-width: 1024px) { .resume-layout { grid-template-columns: 1fr; gap: 2rem; } .resume-sidebar { display: none; } .resume-content-area { max-width: 100%; } }
-        @media (max-width: 768px) { .resume-layout { padding: 0; gap: 2rem; align-items: center; } .resume-card { padding: 1.5rem; width: 100%; border-radius: 16px; } .resume-role { align-items: flex-start; flex-direction: column; gap: 0.25rem;} .resume-content-area { gap: 2rem; } .resume-card-title { font-size: 2rem; margin-bottom: 1.5rem; } .resume-role { font-size: 1.35rem; } }
+        @media (max-width: 768px) { 
+            .resume-layout { padding: 0; gap: 2rem; align-items: center; } 
+            .resume-card { padding: 1.5rem; width: 100%; border-radius: 16px; } 
+            .resume-role { align-items: flex-start; flex-direction: column; gap: 0.25rem;} 
+            .resume-content-area { gap: 2rem; } 
+            .resume-card-title { font-size: 2rem; margin-bottom: 1.5rem; } 
+            .resume-role { font-size: 1.35rem; } 
+        }
 
-        /* ==========================================================================
-        FLASHY CONTACT SECTION
-        ========================================================================= */
+        /* --- About Section (Minimalist Redesign) --- */
+        #about { display: flex; align-items: center; justify-content: center; min-height: 100dvh; padding: 6rem 0; position: relative; }
+        
+        .about-container { 
+            max-width: 1200px; width: 100%; margin: 0 auto; 
+            display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; 
+            padding: 0 4vw; align-items: center; position: relative; 
+        }
+        
+        /* Left Column: Quote and Stats */
+        .about-left-column { display: flex; flex-direction: column; justify-content: center; align-items: flex-start; gap: 4rem; }
+        
+        .about-quote-block {
+            display: flex; flex-direction: column; gap: 1.5rem;
+            border-left: 4px solid var(--accent); padding-left: 2rem;
+            text-align: left; max-width: 600px;
+        }
+        .about-quote-text {
+            font-family: var(--font-serif); font-size: clamp(2rem, 3.5vw, 3rem); line-height: 1.3; color: var(--text-main); font-style: italic; font-weight: 400; margin: 0;
+        }
+        .about-quote-author {
+            font-family: var(--font-mono); font-size: 1rem; color: var(--accent); font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em;
+        }
+        .about-quote-author::before { content: '— '; }
+        
+        .about-stats-row { 
+            display: flex; gap: 4rem; flex-wrap: wrap; width: 100%; justify-content: flex-start;
+        }
+        .about-stat-item { display: flex; flex-direction: column; gap: 0.5rem; text-align: left; }
+        .about-stat-label { font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.15em; font-weight: 600; }
+        .about-stat-val { font-family: var(--font-heading); font-size: 2.5rem; color: var(--text-main); letter-spacing: 0.05em; }
+
+        /* Right Column: Big Photo */
+        .about-right-column { position: relative; display: flex; justify-content: flex-end; align-items: center; width: 100%; }
+        
+        .about-image-wrapper { 
+            width: 100%; max-width: 500px; aspect-ratio: 3/4; border-radius: 24px; overflow: hidden; 
+            border: 1px solid var(--glass-border); position: relative;
+            box-shadow: 0 30px 60px var(--glass-shadow); background: #111;
+        }
+        .about-avatar { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s var(--ease-poppy); transform: translateZ(0); }
+        .about-image-wrapper:hover .about-avatar { transform: scale(1.03); }
+        
+        @media (max-width: 1024px) {
+            .about-container { gap: 3rem; }
+            .about-quote-text { font-size: 2rem; }
+            .about-stats-row { gap: 2rem; }
+        }
+
+        @media (max-width: 768px) {
+            .about-container { grid-template-columns: 1fr; gap: 4rem; text-align: center; }
+            .about-right-column { justify-content: center; grid-row: 1; }
+            .about-left-column { gap: 3rem; align-items: center; }
+            .about-quote-block { padding-left: 0; border-left: none; text-align: center; align-items: center; margin: 0 auto;}
+            .about-stats-row { justify-content: center; text-align: center; gap: 3rem; }
+            .about-stat-item { text-align: center; }
+        }
+
+        /* --- Scroll Reveal Animations --- */
+        .reveal-block { transition: opacity 1.2s cubic-bezier(0.22, 1, 0.36, 1), transform 1.2s cubic-bezier(0.22, 1, 0.36, 1); }
+        .out-view-bottom { opacity: 0; transform: translate3d(0, 40px, 0); }
+        .out-view-top { opacity: 0; transform: translate3d(0, -40px, 0); }
+        .in-view { opacity: 1; transform: translate3d(0, 0, 0); }
+
+        /* --- Contact Section --- */
         #contact { display: block; height: 150dvh; padding: 0; }
         .contact-sticky { position: sticky; top: 0; height: 100dvh; width: 100vw; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; gap: 2rem; }
         .contact-header { font-family: var(--font-serif); font-size: clamp(2rem, 5vw, 4rem); color: var(--accent); font-style: italic; margin-bottom: 1rem; }
         .huge-text-link { font-size: clamp(3rem, 12vw, 10rem); color: transparent; -webkit-text-stroke: 2px var(--text-main); transition: color 0.4s var(--ease-poppy), -webkit-text-stroke 0.4s ease, transform 0.4s var(--ease-poppy); text-decoration: none; line-height: 1; display: inline-block; word-break: break-all; }
         .huge-text-link:hover { color: var(--accent); -webkit-text-stroke: 2px var(--accent); transform: scale(1.02); }
-        .contact-social-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 1.5rem; margin-top: 4rem; }
-        .flashy-social-card { background: var(--glass-bg); border: 1px solid var(--glass-border); padding: 2rem 4rem; border-radius: 999px; font-family: var(--font-heading); font-size: 2rem; color: var(--text-main); text-decoration: none; text-transform: uppercase; transition: transform 0.4s var(--ease-poppy), box-shadow 0.4s var(--ease-poppy), background 0.4s ease, color 0.4s ease; display: flex; align-items: center; gap: 1rem; }
-        .flashy-social-card:hover { transform: translateY(-10px) scale(1.05); box-shadow: 0 20px 40px var(--glass-shadow); z-index: 2; }
-        .flashy-social-card svg { width: 32px; height: 32px; }
-        .flashy-social-card.insta:hover { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); color: white; border-color: transparent;}
-        .flashy-social-card.linkedin:hover { background: #0077B5; color: white; border-color: transparent;}
-        .flashy-social-card.reddit:hover { background: #FF4500; color: white; border-color: transparent;}
+        @media (max-width: 768px) { .huge-text-link { -webkit-text-stroke: 1px var(--text-main); } .huge-text-link:hover { -webkit-text-stroke: 1px var(--accent); } }
 
-        @media (max-width: 768px) { .flashy-social-card { padding: 1rem 1.5rem; font-size: 1.25rem; border-radius: 24px; flex-grow: 1; justify-content: center;} .contact-social-grid { gap: 1rem; } .huge-text-link { -webkit-text-stroke: 1px var(--text-main); } .huge-text-link:hover { -webkit-text-stroke: 1px var(--accent); } }
-
-        /* ==========================================================================
-        NEW DYNAMIC TIMELINE & SLIDESHOW SECTION
-        ========================================================================= */
+        /* --- Timeline (Data Modal Content Styles) --- */
         #timeline { display: block; height: 700dvh; padding: 0; position: relative; scroll-snap-align: none; }
         .timeline-sticky { position: sticky; top: 0; height: 100dvh; width: 100vw; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; }
         .timeline-header { position: absolute; top: 8vh; left: 5vw; font-family: var(--font-mono); font-size: 1.2rem; color: var(--text-muted); letter-spacing: 0.2em; text-transform: uppercase; margin: 0; z-index: 10; }
         #timeline-slides-container { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 5; perspective: 1000px; }
         .timeline-slide { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 0 5vw; opacity: 0; transform: translateY(80px) scale(1.05); transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), transform 1s cubic-bezier(0.22, 1, 0.36, 1); pointer-events: none; }
         .timeline-slide.active { opacity: 1; transform: translateY(0) scale(1); pointer-events: all; }
-        
         .slide-date { font-family: var(--font-heading); font-size: clamp(4rem, 12vw, 10rem); color: transparent; -webkit-text-stroke: 2px color-mix(in srgb, var(--accent) 30%, var(--glass-border)); line-height: 1; margin-bottom: -0.2em; z-index: 1; transform: translateY(20px); opacity: 0; transition: transform 1s cubic-bezier(0.22, 1, 0.36, 1) 0.1s, opacity 1s ease 0.1s; }
         .timeline-slide.active .slide-date { transform: translateY(0); opacity: 1; }
         .slide-title { font-family: var(--font-heading); font-size: clamp(2.5rem, 6vw, 5rem); color: var(--text-main); line-height: 1; margin-bottom: 1.5rem; letter-spacing: 0.02em; z-index: 2; transform: translateY(20px); opacity: 0; transition: transform 1s cubic-bezier(0.22, 1, 0.36, 1) 0.2s, opacity 1s ease 0.2s; }
         .timeline-slide.active .slide-title { transform: translateY(0); opacity: 1; }
         .slide-desc { font-family: var(--font-sans); font-size: clamp(1.1rem, 2vw, 1.5rem); color: var(--text-muted); line-height: 1.6; max-width: 800px; z-index: 2; transform: translateY(20px); opacity: 0; transition: transform 1s cubic-bezier(0.22, 1, 0.36, 1) 0.3s, opacity 1s ease 0.3s; }
         .timeline-slide.active .slide-desc { transform: translateY(0); opacity: 1; }
-
         #timeline-wheel-layer { position: absolute; inset: 0; z-index: 100; cursor: default !important; }
 
-        /* ==========================================================================
-        8. NAVIGATION DOCK & MOBILE PILL
-        ========================================================================= */
+        /* --- Navigation Dock & Dynamic Buttons --- */
         .dock-container { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); z-index: 100; display: flex; align-items: center; gap: 0.75rem; transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1); }
         .dock, .dyn-btn, .dyn-social-btn { background: var(--glass-bg); backdrop-filter: blur(25px) saturate(180%); -webkit-backdrop-filter: blur(25px) saturate(180%); border: 1px solid var(--glass-border); box-shadow: 0 12px 40px var(--glass-shadow), var(--glass-reflection); height: 100%; }
         .dock { display: flex; gap: 0.25rem; padding: 0.35rem; border-radius: 999px; align-items: center; position: relative; height: 58px; transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, backdrop-filter 0.3s ease; }
@@ -405,17 +379,20 @@
         .dyn-socials.active { gap: 0.5rem; }
         .dyn-social-btn { display: flex; align-items: center; justify-content: center; border-radius: 999px; cursor: pointer; color: var(--dock-text); text-decoration: none; overflow: hidden; max-width: 0; padding: 0; border-width: 0; margin: 0; width: 0; opacity: 0; transform: translateY(30px) scale(0.6) rotate(-15deg); pointer-events: none; transition: max-width var(--anim-speed) var(--bounce-curve), width var(--anim-speed) var(--bounce-curve), opacity 0.25s ease-out, color 0.25s ease, transform var(--anim-speed) var(--bounce-curve), background 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease; }
         .dyn-social-btn svg { width: 20px; height: 20px; flex-shrink: 0; fill: currentColor; transition: stroke 0.3s, fill 0.3s; }
-        .dyn-social-btn.movie svg, .dyn-social-btn.game svg { fill: none; }
+        
+        .dyn-social-btn.movie svg, .dyn-social-btn.game svg, .dyn-social-btn.insta svg, .dyn-social-btn.linkedin svg { fill: none; }
         .dyn-social-btn.resume-download:hover { background: var(--accent) !important; color: white !important; border-color: transparent !important; box-shadow: 0 4px 15px color-mix(in srgb, var(--accent) 40%, transparent) !important; }
         .dyn-socials.active .dyn-social-btn, .dyn-multi.active .dyn-social-btn { max-width: 58px; width: 58px; border-width: 1px; opacity: 1; transform: translateY(0) scale(1) rotate(0deg); pointer-events: all; }
         .dyn-socials.active .dyn-social-btn:hover, .dyn-multi.active .dyn-social-btn:hover { transform: scale(1.15) translateY(-3px); color: var(--text-main); }
+        
         .dyn-social-btn.spotify:hover { background: #1DB954 !important; color: #ffffff !important; border-color: transparent !important; box-shadow: 0 4px 15px rgba(29, 185, 84, 0.4) !important; }
         .dyn-social-btn.github:hover { background: #000000 !important; color: #ffffff !important; border-color: transparent !important; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4) !important; }
+        .dyn-social-btn.insta:hover { background: #E1306C !important; color: white !important; border-color: transparent !important; box-shadow: 0 4px 15px rgba(225, 48, 108, 0.4) !important; }
+        .dyn-social-btn.linkedin:hover { background: #0077B5 !important; color: white !important; border-color: transparent !important; box-shadow: 0 4px 15px rgba(0, 119, 181, 0.4) !important; }
+        .dyn-social-btn.reddit:hover { background: #FF4500 !important; color: white !important; border-color: transparent !important; box-shadow: 0 4px 15px rgba(255, 69, 0, 0.4) !important; }
         @media (prefers-color-scheme: dark) { .dyn-social-btn.github:hover { background: #ffffff !important; color: #000000 !important; border-color: transparent !important; box-shadow: 0 4px 15px rgba(255, 255, 255, 0.4) !important; } }
 
-        /* ==========================================================================
-        9. MOBILE PILL & OVERLAYS 
-        ========================================================================= */
+        /* --- Mobile Nav Overlays --- */
         .mobile-pill-container { display: none; background: var(--glass-bg); backdrop-filter: blur(25px) saturate(180%); -webkit-backdrop-filter: blur(25px) saturate(180%); border: 1px solid var(--glass-border); box-shadow: 0 12px 40px var(--glass-shadow); border-radius: 999px; padding: 0.35rem; align-items: center; gap: 0.25rem; height: 58px; }
         .mobile-pill-btn { background: transparent; border: none; color: var(--dock-text); width: 46px; height: 46px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: color 0.3s, background 0.3s; }
         .mobile-pill-btn svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
@@ -434,9 +411,7 @@
             .dock-container { bottom: 1.5rem; }
         }
 
-        /* ==========================================================================
-        10. FULLSCREEN MODALS & POPUPS
-        ========================================================================= */
+        /* --- Fullscreen Modals & Bento Grid --- */
         .cert-modal-backdrop { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: var(--bg-color); z-index: 10000; display: flex; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
         .cert-modal-backdrop.open { opacity: 1; pointer-events: all; }
         .cert-modal-content { width: 100vw; height: 100vh; display: flex; flex-direction: column; overflow: hidden; background: var(--bg-color); transform: translateY(20px); transition: transform 0.5s var(--ease-poppy); }
@@ -452,7 +427,6 @@
         .fullscreen-modal-body { flex: 1; overflow-y: auto; padding: 4rem; background: var(--bg-color); display: flex; justify-content: center; }
 
         .fs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 2.5rem; max-width: 1400px; margin: 0 auto; width: 100%; align-content: start; }
-        
         .fs-card { background: var(--card-bg); border: 1px solid var(--glass-border); border-radius: 24px; padding: 2.5rem; display: flex; flex-direction: column; gap: 1.5rem; transition: transform 0.4s var(--ease-poppy), box-shadow 0.4s ease, border-color 0.4s; }
         .fs-card:hover { transform: translateY(-10px) scale(1.02); box-shadow: 0 25px 50px var(--glass-shadow); border-color: var(--accent); }
         .fs-card-title { font-family: var(--font-heading); font-size: 2rem; color: var(--text-main); text-transform: uppercase; line-height: 1.1; margin: 0;}
@@ -462,69 +436,23 @@
         .fs-card-action { align-self: flex-start; padding: 1rem 2rem; background: var(--text-main); color: var(--bg-color); border-radius: 99px; text-decoration: none; font-weight: 700; font-family: var(--font-sans); text-transform: uppercase; letter-spacing: 0.05em; transition: transform 0.3s var(--ease-poppy), background 0.3s, color 0.3s; border: none; cursor: pointer;}
         .fs-card-action:hover { transform: scale(1.05); background: var(--accent); color: var(--accent-fg); }
 
-        /* Beautiful Redesigned Bento Dashboard for Stats */
-        .stats-bento-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
-            width: 100%;
-            max-width: 1100px;
-            margin: 0 auto;
-        }
+        .stats-bento-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; width: 100%; max-width: 1100px; margin: 0 auto; }
         @media (min-width: 1024px) {
-            .stats-bento-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
+            .stats-bento-grid { grid-template-columns: repeat(3, 1fr); }
             .bento-span-2 { grid-column: span 2; }
             .bento-span-3 { grid-column: span 3; }
         }
-        .bento-card {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 24px;
-            padding: 2.5rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            gap: 1.5rem;
-            transition: transform 0.4s var(--ease-poppy), box-shadow 0.4s ease, border-color 0.4s;
-            position: relative;
-            overflow: hidden;
-            backdrop-filter: blur(20px);
-        }
-        .bento-card:hover {
-            transform: translateY(-5px) scale(1.02);
-            box-shadow: 0 20px 40px var(--glass-shadow);
-            border-color: var(--accent);
-        }
-        .bento-icon {
-            color: var(--accent);
-            opacity: 0.8;
-            margin-bottom: 0.5rem;
-        }
-        .bento-title {
-            font-family: var(--font-mono);
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: var(--text-muted);
-            font-weight: 700;
-        }
-        .bento-value {
-            font-family: var(--font-heading);
-            font-size: clamp(3rem, 5vw, 4.5rem);
-            color: var(--text-main);
-            line-height: 1;
-            margin-top: auto;
-        }
+        .bento-card { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 24px; padding: 2.5rem; display: flex; flex-direction: column; justify-content: space-between; gap: 1.5rem; transition: transform 0.4s var(--ease-poppy), box-shadow 0.4s ease, border-color 0.4s; position: relative; overflow: hidden; backdrop-filter: blur(20px); opacity: 0; transform: translateY(40px) scale(0.95); }
+        .bento-card:hover { transform: translateY(-5px) scale(1.02); box-shadow: 0 20px 40px var(--glass-shadow); border-color: var(--accent); }
+        .bento-icon { color: var(--accent); opacity: 0.8; margin-bottom: 0.5rem; }
+        .bento-title { font-family: var(--font-mono); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); font-weight: 700; }
+        .bento-value { font-family: var(--font-heading); font-size: clamp(3rem, 5vw, 4.5rem); color: var(--text-main); line-height: 1; margin-top: auto; }
         .bento-value.accent { color: var(--accent); }
         .bento-group { display: flex; gap: 2.5rem; flex-wrap: wrap; margin-top: auto;}
         .bento-sub { display: flex; flex-direction: column; gap: 0.25rem; }
         .bento-sub-val { font-family: var(--font-heading); font-size: 2.5rem; color: var(--text-main); line-height: 1; }
         .bento-sub-label { font-family: var(--font-serif); font-size: 1.1rem; font-style: italic; color: var(--text-muted); }
 
-        /* Staggered entry for Bento Cards */
-        .bento-card { opacity: 0; transform: translateY(40px) scale(0.95); }
         .cert-modal-backdrop.open .bento-card { animation: dashEnter 0.6s var(--ease-poppy) forwards; }
         .cert-modal-backdrop.open .bento-card:nth-child(1) { animation-delay: 0.1s; }
         .cert-modal-backdrop.open .bento-card:nth-child(2) { animation-delay: 0.2s; }
@@ -538,7 +466,7 @@
             100% { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        /* Certificates */
+        /* --- Certificates Sub-views --- */
         #cert-folders-view { display: none; }
         #cert-folders-view.active { display: grid; }
         #cert-gallery-view { display: none; }
@@ -551,12 +479,11 @@
         .cert-grid img { width: 100%; border-radius: 8px; border: 1px solid var(--glass-border); transition: transform 0.4s var(--ease-poppy), box-shadow 0.4s ease; cursor: pointer; }
         .cert-grid img:hover { transform: scale(1.05) translateY(-5px); box-shadow: 0 20px 40px var(--glass-shadow); border-color: var(--accent); }
 
-        /* Summary Modal List */
         .summary-list { list-style: none; display: flex; flex-direction: column; gap: 1.5rem; padding: 0; }
         .summary-list li { font-family: var(--font-sans); font-size: 1.15rem; color: var(--text-main); line-height: 1.6; display: flex; gap: 1rem; align-items: flex-start; }
         .summary-list li svg { width: 24px; height: 24px; color: var(--accent); flex-shrink: 0; margin-top: 2px;}
 
-        /* Image Viewer Overlay */
+        /* --- Image Viewer --- */
         .image-viewer-backdrop { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.95); z-index: 20000; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
         .image-viewer-backdrop.open { opacity: 1; pointer-events: all; }
         .image-viewer-img { max-width: 90vw; max-height: 90vh; border-radius: 12px; object-fit: contain; transform: translate3d(0,0,0) scale(0.9); transition: transform 0.4s var(--ease-poppy); box-shadow: 0 10px 30px rgba(0,0,0,0.5); backface-visibility: hidden; }
@@ -564,9 +491,7 @@
         .image-viewer-close { position: absolute; top: 2rem; right: 2rem; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: transform 0.3s var(--ease-poppy), background 0.3s, border-color 0.3s, color 0.3s; z-index: 20001; }
         .image-viewer-close:hover { transform: scale(1.1); background: var(--accent); border-color: var(--accent); color: var(--accent-fg); }
 
-        /* ==========================================================================
-        11. AURA (SPOTLIGHT CHATBOT)
-        ========================================================================= */
+        /* --- Aura Spotlight Chatbot --- */
         .aura-backdrop { position: fixed; inset: 0; z-index: 999999; background: rgba(0,0,0,0.6); display: flex; justify-content: center; align-items: flex-start; padding-top: 15vh; opacity: 0; pointer-events: none; transition: opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1); }
         .aura-backdrop.open { opacity: 1; pointer-events: all; }
         .aura-container { width: 90%; max-width: 650px; background: var(--card-bg); border: 1px solid var(--glass-border); border-radius: 32px; box-shadow: 0 40px 80px rgba(0,0,0,0.4); display: flex; flex-direction: column; overflow: hidden; transform: scale(0.9) translateY(-40px); opacity: 0; transition: transform 0.5s var(--ease-poppy), opacity 0.4s ease; max-height: 65vh; }
@@ -604,17 +529,17 @@
 </head>
 <body>
 
-    <!-- LOADER -->
+    <!-- Loader -->
     <div id="liquid-loader">
         <h1 class="loader-text outline">ARCHIT MISHRA</h1>
         <h1 class="loader-text liquid">ARCHIT MISHRA</h1>
         <div id="loader-tip" class="loader-tip">Tip: Press <kbd id="loader-tip-key">Ctrl</kbd> + <kbd>K</kbd> to open Aura</div>
     </div>
 
-    <!-- CUSTOM CURSOR -->
+    <!-- Custom Cursor -->
     <div id="custom-cursor"></div>
 
-    <!-- HOME -->
+    <!-- Home -->
     <section id="home" class="section mono-bg">
         <div class="hero-center-content poppy-anim">
             <div class="hero-text-block">
@@ -625,66 +550,12 @@
         </div>
     </section>
 
-    <!-- ABOUT -->
-    <section id="about" class="section mono-bg">
-        <div class="about-sticky">
-            <div class="about-container bouncy-reveal">
-                
-                <div class="about-image-wrapper">
-                    <!-- Added loading="lazy" and decoding="async" -->
-                    <img src="./Resources/Pfp/pfp.jpg" alt="Archit V. Mishra" class="about-avatar" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='https://placehold.co/400x500/1d1d1f/86868b?text=A.M.';">
-                </div>
-                
-                <div class="about-text-content">
-                    <span class="about-label">About Me</span>
-                    <h2 class="about-massive-text">
-                        Building <span class="serif-italic" style="color: var(--accent);">Proof,</span><br>Not Excuses.
-                    </h2>
-                    <p class="about-desc" id="randomized-quote">
-                                            </p>
-                    <script>
-                        (function() {
-                            const quotes = [
-                                "I debug life by adding more bugs until the original one feels lonely",
-                                "My code has two modes: Nobel Prize or nuclear accident",
-                                "I write code so confusing even future me files bug reports",
-                                "Sleep is just my CPU entering low-power mode",
-                                "I don't make mistakes. I create undocumented features for character development",
-                                "The only thing faster than my code is my confidence before production",
-                                "God gave me free will. I gave it infinite loops"
-                            ];
-                            const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
-                            document.getElementById('randomized-quote').innerHTML = `"${randomQuote}" - Archit Mishra`;
-                        })();
-                    </script>
-                    <hr class="about-divider">
-                    <div class="about-stats-row">
-                        <div class="about-stat-item">
-                            <span class="about-stat-label">Location</span>
-                            <span class="about-stat-val">Surat, IN</span>
-                        </div>
-                        <div class="about-stat-item">
-                            <span class="about-stat-label">Age</span>
-                            <span class="about-stat-val" id="about-age-text">20Y</span>
-                        </div>
-                        <div class="about-stat-item">
-                            <span class="about-stat-label">Education</span>
-                            <span class="about-stat-val">B.E. (C.E.)</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- PROJECTS -->
+    <!-- Projects -->
     <section id="projects" class="mono-bg">
         <div class="projects-sticky">
             <div class="projects-track" id="projects-track">
-                
                 <div class="project-slide">
                     <div class="project-card" data-index="0">
-                        <!-- Ultra-lightweight preloaded pattern: transparent base64 GIF prevents HTML blocking -->
                         <img class="project-bg" data-preload="./Resources/Projects/AutoDM/bg.png" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="AutoDM Background" decoding="async">
                         <div class="project-gradient"></div>
                         <div class="project-content">
@@ -696,7 +567,6 @@
                 
                 <div class="project-slide">
                     <div class="project-card" data-index="1">
-                        <!-- Ultra-lightweight preloaded pattern: transparent base64 GIF prevents HTML blocking -->
                         <img class="project-bg" data-preload="./Resources/Projects/AMBS/bg.png" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="TradeApp Background" decoding="async">
                         <div class="project-gradient"></div>
                         <div class="project-content">
@@ -708,7 +578,6 @@
                 
                 <div class="project-slide">
                     <div class="project-card" data-index="2">
-                        <!-- Ultra-lightweight preloaded pattern: transparent base64 GIF prevents HTML blocking -->
                         <img class="project-bg" data-preload="./Resources/Projects/FSPro/bg.png" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="FSPro Background" decoding="async">
                         <div class="project-gradient"></div>
                         <div class="project-content">
@@ -717,18 +586,18 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </section>
 
-    <!-- RESUME -->
+    <!-- Resume Section -->
     <section id="resume" class="section mono-bg">
         <div class="section-content">
             <div class="resume-layout">
                 <div class="resume-sidebar">
                     <ul class="resume-nav-list">
-                        <li><a href="#resume-experience" class="resume-nav-link active">Experience</a></li>
+                        <li><a href="#resume-summary" class="resume-nav-link active">Summary</a></li>
+                        <li><a href="#resume-experience" class="resume-nav-link">Experience</a></li>
                         <li><a href="#resume-skills" class="resume-nav-link">Skills</a></li>
                         <li><a href="#resume-achievements" class="resume-nav-link">Achievements</a></li>
                         <li><a href="#resume-education" class="resume-nav-link">Education</a></li>
@@ -736,7 +605,17 @@
                 </div>
 
                 <div class="resume-content-area">
-                    <!-- Experience -->
+                    <div id="resume-summary" class="resume-card reveal-block">
+                        <h3 class="resume-card-title">Career Highlights</h3>
+                        <ul class="summary-list">
+                            <li><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Computer Engineering student at GEC Surat with a consistent 8.35+ CPI.</li>
+                            <li><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Top-tier academic performer (99.36%ile in 12th Grade Science).</li>
+                            <li><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Skilled Python developer & UI/UX designer with advanced data cleaning experience.</li>
+                            <li><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Successfully implemented an industrial inventory system during a 2026 Societal Internship.</li>
+                            <li><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Active freelancer building comprehensive web applications and desktop tools.</li>
+                        </ul>
+                    </div>
+
                     <div id="resume-experience" class="resume-card reveal-block">
                         <h3 class="resume-card-title">Experience</h3>
                         <div class="resume-item">
@@ -757,7 +636,6 @@
                         </div>
                     </div>
 
-                    <!-- Skills -->
                     <div id="resume-skills" class="resume-card reveal-block">
                         <h3 class="resume-card-title">Skills</h3>
                         <div class="resume-item">
@@ -769,7 +647,6 @@
                         </div>
                     </div>
 
-                    <!-- Achievements -->
                     <div id="resume-achievements" class="resume-card reveal-block">
                         <h3 class="resume-card-title">Achievements</h3>
                         <div class="resume-item">
@@ -788,7 +665,6 @@
                         </div>
                     </div>
 
-                    <!-- Education -->
                     <div id="resume-education" class="resume-card reveal-block">
                         <h3 class="resume-card-title">Education</h3>
                         <div class="resume-item">
@@ -815,56 +691,62 @@
         </div>
     </section>
 
-    <!-- CONTACT -->
+    <!-- About Section -->
+    <section id="about" class="section mono-bg">
+        <div class="about-container">
+            
+            <!-- Left Side: Quote and Stats -->
+            <div class="about-left-column">
+                <div class="about-quote-block">
+                    <h3 class="about-quote-text" id="randomized-quote"></h3>
+                    <span class="about-quote-author">Archit Mishra</span>
+                </div>
+                
+                <div class="about-stats-row">
+                    <div class="about-stat-item">
+                        <span class="about-stat-label">Location</span>
+                        <span class="about-stat-val">Surat, IN</span>
+                    </div>
+                    <div class="about-stat-item">
+                        <span class="about-stat-label">Age</span>
+                        <span class="about-stat-val" id="about-age-text">20Y</span>
+                    </div>
+                    <div class="about-stat-item">
+                        <span class="about-stat-label">Education</span>
+                        <span class="about-stat-val">B.E.</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side: Big Photo -->
+            <div class="about-right-column">
+                <div class="about-image-wrapper">
+                    <img src="Resources/Pfp/pfp.jpg" alt="Archit V. Mishra" class="about-avatar" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='https://placehold.co/800x1000/1d1d1f/86868b?text=A.M.';">
+                </div>
+            </div>
+            
+        </div>
+    </section>
+
+    <!-- Contact Section -->
     <section id="contact" class="mono-bg">
         <div class="contact-sticky">
-            <div class="section-content bouncy-reveal" style="max-width: 1400px;">
+            <div class="section-content" style="max-width: 1400px;">
                 <div class="contact-header">Got a project in mind?</div>
                 <a href="mailto:architm193@gmail.com" class="huge-text-link">SAY HELLO</a>
-                
-                <div class="contact-social-grid">
-                    <a href="https://www.instagram.com/its_avm/" target="_blank" class="flashy-social-card insta">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
-                        Instagram
-                    </a>
-                    <a href="https://www.linkedin.com/in/archit-m-5133b2370/" target="_blank" class="flashy-social-card linkedin">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
-                        LinkedIn
-                    </a>
-                    <a href="https://www.reddit.com/user/its_avm_05/" target="_blank" class="flashy-social-card reddit">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M22 11.083A3.082 3.082 0 0018.917 8c-.68 0-1.306.236-1.802.613-1.312-.907-3.088-1.464-5.06-1.542l1.077-5.011 3.473.743a2.122 2.122 0 002.046 2.01h.01a2.115 2.115 0 002.112-2.115 2.116 2.116 0 00-2.115-2.112 2.114 2.114 0 00-2.062 1.666l-3.834-.82a.386.386 0 00-.45.295L11.16 7.054c-1.996.064-3.8.618-5.132 1.536A3.076 3.076 0 004.225 8 3.082 3.082 0 001.143 11.083c0 1.258.75 2.341 1.83 2.825-.034.234-.055.474-.055.717 0 3.738 4.093 6.782 9.135 6.782 5.04 0 9.133-3.044 9.133-6.782 0-.244-.02-.483-.056-.718 1.08-.485 1.83-1.567 1.83-2.824h-.002z"/></svg>
-                        Reddit
-                    </a>
-                </div>
             </div>
         </div>
     </section>
 
-    <!-- TIMELINE -->
-    <section id="timeline" class="section mono-bg" style="height: 700dvh;">
-        <div class="timeline-sticky">
-            <h3 class="timeline-header">Timeline</h3>
-            <div id="timeline-slides-container">
-                <!-- Slides injected dynamically -->
-                <div class="timeline-slide active" id="timeline-slide-placeholder">
-                    <span class="slide-date" id="ts-date">2006</span>
-                    <h4 class="slide-title" id="ts-title">Born</h4>
-                    <p class="slide-desc" id="ts-desc">Born in Vapi on 30 May 2006.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- DOCK NAVIGATION & DYNAMIC ACTIONS -->
+    <!-- Dock Navigation -->
     <div class="dock-container at-top">
         <nav class="dock desktop-nav poppy-anim">
             <div id="dock-highlight"></div>
             <a href="#home" class="nav-link active">Home</a>
-            <a href="#about" class="nav-link">About</a>
             <a href="#projects" class="nav-link">Projects</a>
             <a href="#resume" class="nav-link">Resume</a>
+            <a href="#about" class="nav-link">About</a>
             <a href="#contact" class="nav-link">Contact</a>
-            <a href="#timeline" class="nav-link">Timeline</a>
         </nav>
         
         <div class="mobile-pill-container poppy-anim">
@@ -878,10 +760,10 @@
         </div>
 
         <div id="dynamic-actions-container" class="dock-actions desktop-actions">
-            <!-- ABOUT -->
+            <!-- About Actions -->
             <div id="dyn-about" class="dyn-multi">
-                <button class="dyn-social-btn movie" aria-label="Movies" title="Movies & Series">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.2 6 3 11l-.9-2.4c-.3-1.1.4-2.2 1.5-2.5l13.5-4c1.1-.3 2.2.4 2.5 1.5l.6 2.4z"/><path d="m2.6 12 17.3-5.2"/><path d="M5.5 8 8 13"/><path d="M12.5 6 15 11"/><path d="M19.5 4 22 9"/><rect width="20" height="10" x="2" y="12" rx="2"/></svg>
+                <button class="dyn-social-btn movie" aria-label="Series" title="Series Recommendations">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="15" x="2" y="7" rx="2" ry="2"/><polyline points="17 2 12 7 7 2"/></svg>
                 </button>
                 <button class="dyn-social-btn game" aria-label="Game" title="Games">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -897,7 +779,7 @@
                 </button>
             </div>
             
-            <!-- PROJECTS -->
+            <!-- Projects Actions -->
             <div id="dyn-projects" class="dyn-multi">
                 <a id="dyn-projects-visit" href="#" target="_blank" class="dyn-btn">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>
@@ -912,14 +794,12 @@
                 </a>
             </div>
             
-            <!-- RESUME -->
+            <!-- Resume Actions -->
             <div id="dyn-resume" class="dyn-multi">
-                <!-- Summarize Button -->
-                <button id="dyn-summarize-trigger" class="dyn-btn">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
-                    Summarize
+                <button id="dyn-timeline-data-trigger" class="dyn-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    Timeline
                 </button>
-
                 <button id="dyn-cert-trigger" class="dyn-btn">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
                     Certificates
@@ -929,38 +809,32 @@
                 </button>
             </div>
 
-            <!-- CONTACT -->
+            <!-- Contact Actions -->
             <div id="dyn-contact" class="dyn-multi">
-                <button id="dyn-contact-tip" class="dyn-btn">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-                    Tip: You should!
-                </button>
+                <a href="https://www.instagram.com/its_avm/" target="_blank" class="dyn-social-btn insta" aria-label="Instagram">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+                </a>
+                <a href="https://www.linkedin.com/in/archit-m-5133b2370/" target="_blank" class="dyn-social-btn linkedin" aria-label="LinkedIn">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
+                </a>
+                <a href="https://www.reddit.com/user/its_avm_05/" target="_blank" class="dyn-social-btn reddit" aria-label="Reddit">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M22 11.083A3.082 3.082 0 0018.917 8c-.68 0-1.306.236-1.802.613-1.312-.907-3.088-1.464-5.06-1.542l1.077-5.011 3.473.743a2.122 2.122 0 002.046 2.01h.01a2.115 2.115 0 002.112-2.115 2.116 2.116 0 00-2.115-2.112 2.114 2.114 0 00-2.062 1.666l-3.834-.82a.386.386 0 00-.45.295L11.16 7.054c-1.996.064-3.8.618-5.132 1.536A3.076 3.076 0 004.225 8 3.082 3.082 0 001.143 11.083c0 1.258.75 2.341 1.83 2.825-.034.234-.055.474-.055.717 0 3.738 4.093 6.782 9.135 6.782 5.04 0 9.133-3.044 9.133-6.782 0-.244-.02-.483-.056-.718 1.08-.485 1.83-1.567 1.83-2.824h-.002z"/></svg>
+                </a>
             </div>
-
-            <!-- TIMELINE -->
-            <div id="dyn-timeline" class="dyn-multi">
-                <button id="dyn-references-trigger" class="dyn-btn">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></svg>
-                    <span id="dyn-references-text">Reference</span>
-                </button>
-            </div>
-
         </div>
     </div>
     
-    <!-- Mobile Menu -->
+    <!-- Mobile Menu Overlay -->
     <div id="mobile-menu-overlay">
         <a href="#home" class="mobile-nav-link active">Home</a>
-        <a href="#about" class="mobile-nav-link">About</a>
         <a href="#projects" class="mobile-nav-link">Projects</a>
         <a href="#resume" class="mobile-nav-link">Resume</a>
+        <a href="#about" class="mobile-nav-link">About</a>
         <a href="#contact" class="mobile-nav-link">Contact</a>
-        <a href="#timeline" class="mobile-nav-link">Timeline</a>
     </div>
 
-    <!-- ==========================================
-        NEW DYNAMIC STATS MODAL (BENTO GRID DASHBOARD)
-        ========================================== -->
+    <!-- Modals Configuration -->
+    <!-- Stats Modal -->
     <div id="stats-modal" class="cert-modal-backdrop">
         <div class="cert-modal-content">
             <div class="fullscreen-modal-header">
@@ -968,18 +842,14 @@
                     <button class="modal-back-btn modal-close-trigger">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
                     </button>
-                    <div class="modal-address-bar">
-                        archit.mishra / <span>stats</span>
-                    </div>
+                    <div class="modal-address-bar">archit.mishra / <span>stats</span></div>
                 </div>
                 <button class="modal-close-btn modal-close-trigger">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
                 </button>
             </div>
-            
             <div class="fullscreen-modal-body">
                 <div class="stats-bento-grid">
-                    <!-- Top span 2 -->
                     <div class="bento-card bento-span-2">
                         <div>
                             <svg class="bento-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
@@ -989,7 +859,6 @@
                             <div class="skeleton" style="width: 250px; height: 1em;"></div>
                         </div>
                     </div>
-
                     <div class="bento-card">
                         <div>
                             <svg class="bento-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20a8 8 0 1 0 0-16 8 8 0 0 0 0 16Z"/><path d="M12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"/><path d="M12 2v2"/><path d="M12 22v-2"/><path d="m17 20.66-1-1.73"/><path d="M11 10.27 7 3.34"/><path d="m20.66 17-1.73-1"/><path d="m3.34 7 1.73 1"/><path d="M14 12h8"/><path d="M2 12h2"/><path d="m20.66 7-1.73 1"/><path d="m3.34 17 1.73-1"/><path d="m17 3.34-1 1.73"/><path d="m11 13.73-4 6.93"/></svg>
@@ -999,8 +868,6 @@
                             <div class="skeleton" style="width: 100px; height: 1em;"></div>
                         </div>
                     </div>
-
-                    <!-- Middle 3 small -->
                     <div class="bento-card">
                         <div>
                             <svg class="bento-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" x2="2" y1="12" y2="12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/><line x1="6" x2="6.01" y1="16" y2="16"/><line x1="10" x2="10.01" y1="16" y2="16"/></svg>
@@ -1010,7 +877,6 @@
                             <div class="skeleton" style="width: 80px; height: 1em;"></div>
                         </div>
                     </div>
-
                     <div class="bento-card bento-span-2">
                         <div>
                             <svg class="bento-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" x2="15" y1="20" y2="20"/><line x1="12" x2="12" y1="4" y2="20"/></svg>
@@ -1020,8 +886,6 @@
                             <div class="skeleton" style="width: 180px; height: 1em;"></div>
                         </div>
                     </div>
-
-                    <!-- Bottom span 3 -->
                     <div class="bento-card bento-span-3" style="flex-direction: row; align-items: center; justify-content: space-between; flex-wrap: wrap;">
                         <div>
                             <svg class="bento-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
@@ -1042,15 +906,12 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- ==========================================
-        NEW RESUME DOWNLOAD MODAL
-        ========================================== -->
+    <!-- Resume Download Modal -->
     <div id="download-modal" class="cert-modal-backdrop">
         <div class="cert-modal-content">
             <div class="fullscreen-modal-header">
@@ -1058,9 +919,7 @@
                     <button class="modal-back-btn modal-close-trigger">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
                     </button>
-                    <div class="modal-address-bar">
-                        archit.mishra / <span>download_options</span>
-                    </div>
+                    <div class="modal-address-bar">archit.mishra / <span>download_options</span></div>
                 </div>
                 <button class="modal-close-btn modal-close-trigger">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
@@ -1085,76 +944,71 @@
         </div>
     </div>
 
-    <!-- ==========================================
-        NEW RESUME SUMMARY MODAL
-        ========================================== -->
-    <div id="summary-modal" class="cert-modal-backdrop">
+    <!-- Timeline Data Modal -->
+    <div id="timeline-data-modal" class="cert-modal-backdrop">
         <div class="cert-modal-content">
             <div class="fullscreen-modal-header">
                 <div class="modal-header-left">
                     <button class="modal-back-btn modal-close-trigger">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
                     </button>
-                    <div class="modal-address-bar">
-                        archit.mishra / <span>resume_summary</span>
-                    </div>
+                    <div class="modal-address-bar">archit.mishra / <span>timeline_data</span></div>
                 </div>
                 <button class="modal-close-btn modal-close-trigger">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
                 </button>
             </div>
-            <div class="fullscreen-modal-body">
-                <div class="fs-grid">
-                    <div class="fs-card" style="grid-column: 1 / -1; max-width: 900px; margin: 0 auto; width: 100%;">
-                        <h4 class="fs-card-title" style="margin-bottom: 1rem;">Career Highlights</h4>
-                        <ul class="summary-list">
-                            <li><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Computer Engineering student at GEC Surat with a consistent 8.35+ CPI.</li>
-                            <li><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Top-tier academic performer (99.36%ile in 12th Grade Science).</li>
-                            <li><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Skilled Python developer & UI/UX designer with advanced data cleaning experience.</li>
-                            <li><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Successfully implemented an industrial inventory system during a 2026 Societal Internship.</li>
-                            <li><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Active freelancer building comprehensive web applications and desktop tools.</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ==========================================
-        NEW FULLSCREEN REFERENCES MODAL
-        ========================================== -->
-    <div id="references-modal" class="cert-modal-backdrop">
-        <div class="cert-modal-content">
-            <div class="fullscreen-modal-header">
-                <div class="modal-header-left">
-                    <button class="modal-back-btn modal-close-trigger">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
-                    </button>
-                    <div class="modal-address-bar">
-                        archit.mishra / <span>reference_details</span>
-                    </div>
-                </div>
-                <button class="modal-close-btn modal-close-trigger">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-                </button>
-            </div>
-            <div class="fullscreen-modal-body" style="align-items: center; justify-content: center; display: flex;">
-                <div class="fs-card" style="max-width: 600px; width: 100%; align-items: center; text-align: center; padding: 4rem 2rem;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 1.5rem;"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></svg>
-                    <h5 id="ref-modal-name" style="font-family: var(--font-serif); font-size: 2.5rem; color: var(--accent); margin-bottom: 0.5rem; font-style: italic;">Name</h5>
-                    <p id="ref-modal-role" style="font-family: var(--font-sans); color: var(--text-main); font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; margin-top: 0; margin-bottom: 2rem;">Role</p>
+            <div class="fullscreen-modal-body" style="padding: 2rem; display: flex; justify-content: center;">
+                <div style="display: flex; flex-direction: column; gap: 8rem; max-width: 900px; width: 100%; text-align: center; margin: 4rem 0;">
                     
-                    <div style="display: flex; flex-direction: column; gap: 1rem; width: 100%;">
-                        <p id="ref-desc-text" style="font-family: var(--font-sans); color: var(--text-muted); font-size: 1.15rem; line-height: 1.6; margin: 0 auto; max-width: 500px; text-transform: none;">Description goes here.</p>
+                    <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
+                        <span class="slide-date" style="opacity: 1; transform: translateY(0); margin-bottom: 0;">2006</span>
+                        <h4 class="slide-title" style="opacity: 1; transform: translateY(0); margin-bottom: 1rem;">Born in Vapi</h4>
+                        <p class="slide-desc" style="opacity: 1; transform: translateY(0);">Born in Vapi on 30 May 2006.<br><span style="color:var(--accent); font-size:0.85rem; font-family: var(--font-mono); text-transform: uppercase; display: block; margin-top: 1rem; font-weight: 700;">Ref: Parents</span></p>
                     </div>
+
+                    <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
+                        <span class="slide-date" style="opacity: 1; transform: translateY(0); margin-bottom: 0;">2020</span>
+                        <h4 class="slide-title" style="opacity: 1; transform: translateY(0); margin-bottom: 1rem;">Secondary</h4>
+                        <p class="slide-desc" style="opacity: 1; transform: translateY(0);">Completed 10th in April 2020 from Ashadham School Vapi.<br><span style="color:var(--accent); font-size:0.85rem; font-family: var(--font-mono); text-transform: uppercase; display: block; margin-top: 1rem; font-weight: 700;">Ref: Principal</span></p>
+                    </div>
+
+                    <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
+                        <span class="slide-date" style="opacity: 1; transform: translateY(0); margin-bottom: 0;">2022</span>
+                        <h4 class="slide-title" style="opacity: 1; transform: translateY(0); margin-bottom: 1rem;">Higher Secondary</h4>
+                        <p class="slide-desc" style="opacity: 1; transform: translateY(0);">Graduated from Upasana Lions School, Vapi with the highest percentage of marks in the entire school.<br><span style="color:var(--accent); font-size:0.85rem; font-family: var(--font-mono); text-transform: uppercase; display: block; margin-top: 1rem; font-weight: 700;">Ref: Ms. Mayuri Shah</span></p>
+                    </div>
+
+                    <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
+                        <span class="slide-date" style="opacity: 1; transform: translateY(0); margin-bottom: 0;">2024</span>
+                        <h4 class="slide-title" style="opacity: 1; transform: translateY(0); margin-bottom: 1rem;">Bachelor of Engineering</h4>
+                        <p class="slide-desc" style="opacity: 1; transform: translateY(0);">Started studying Computer Engineering at Dr. S. & S.S. Ghandhy Govt. Engineering College.<br><span style="color:var(--accent); font-size:0.85rem; font-family: var(--font-mono); text-transform: uppercase; display: block; margin-top: 1rem; font-weight: 700;">Ref: Prof. Hardik Makwana</span></p>
+                    </div>
+
+                    <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
+                        <span class="slide-date" style="opacity: 1; transform: translateY(0); margin-bottom: 0;">2025</span>
+                        <h4 class="slide-title" style="opacity: 1; transform: translateY(0); margin-bottom: 1rem;">First Commit</h4>
+                        <p class="slide-desc" style="opacity: 1; transform: translateY(0);">Made first GitHub commit on November 8th 2025.<br><span style="color:var(--accent); font-size:0.85rem; font-family: var(--font-mono); text-transform: uppercase; display: block; margin-top: 1rem; font-weight: 700;">Ref: GitHub Platform</span></p>
+                    </div>
+
+                    <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
+                        <span class="slide-date" style="opacity: 1; transform: translateY(0); margin-bottom: 0;">2026</span>
+                        <h4 class="slide-title" style="opacity: 1; transform: translateY(0); margin-bottom: 1rem;">Societal Internship</h4>
+                        <p class="slide-desc" style="opacity: 1; transform: translateY(0);">Developed an efficient inventory management system at Sagar Steel, Vapi.<br><span style="color:var(--accent); font-size:0.85rem; font-family: var(--font-mono); text-transform: uppercase; display: block; margin-top: 1rem; font-weight: 700;">Ref: Mr. Dinesh Chodhury</span></p>
+                    </div>
+
+                    <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
+                        <span class="slide-date" style="opacity: 1; transform: translateY(0); margin-bottom: 0;">Present</span>
+                        <h4 class="slide-title" style="opacity: 1; transform: translateY(0); margin-bottom: 1rem;">Continuing B.E.</h4>
+                        <p class="slide-desc" style="opacity: 1; transform: translateY(0);">Resumed studies in Computer Engineering.<br><span style="color:var(--accent); font-size:0.85rem; font-family: var(--font-mono); text-transform: uppercase; display: block; margin-top: 1rem; font-weight: 700;">Ref: Prof. Hardik Makwana</span></p>
+                    </div>
+
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- ==========================================
-        NEW DETAILED PROJECT MODAL
-        ========================================== -->
+    <!-- Project Detail Modal -->
     <div id="project-detail-modal" class="cert-modal-backdrop">
         <div class="cert-modal-content">
             <div class="fullscreen-modal-header">
@@ -1162,16 +1016,13 @@
                     <button class="modal-back-btn modal-close-trigger">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
                     </button>
-                    <div class="modal-address-bar">
-                        archit.mishra / <span id="pd-path">project_details</span>
-                    </div>
+                    <div class="modal-address-bar">archit.mishra / <span id="pd-path">project_details</span></div>
                 </div>
                 <button class="modal-close-btn modal-close-trigger">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
                 </button>
             </div>
             <div class="fullscreen-modal-body" style="padding: 0; display: block;">
-                <!-- Cover Image area -->
                 <div id="pd-img" style="width: 100%; height: 40vh; background-size: cover; background-position: center; border-bottom: 1px solid var(--glass-border); position: relative;">
                     <div style="position: absolute; inset: 0; background: linear-gradient(to top, var(--bg-color), transparent);"></div>
                 </div>
@@ -1184,7 +1035,7 @@
         </div>
     </div>
 
-    <!-- CERTIFICATES MODAL -->
+    <!-- Certificates Modal -->
     <div id="cert-modal" class="cert-modal-backdrop">
         <div class="cert-modal-content">
             <div class="fullscreen-modal-header">
@@ -1192,15 +1043,12 @@
                     <button id="cert-back-btn" class="modal-back-btn modal-close-trigger">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
                     </button>
-                    <div class="modal-address-bar">
-                        archit.mishra / <span id="cert-address-path">certificates</span>
-                    </div>
+                    <div class="modal-address-bar">archit.mishra / <span id="cert-address-path">certificates</span></div>
                 </div>
                 <button class="modal-close-btn modal-close-trigger">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
                 </button>
             </div>
-            
             <div class="fullscreen-modal-body">
                 <div id="cert-folders-view" class="fs-grid active">
                     <div class="fs-folder-card" data-folder="marksheet">
@@ -1221,7 +1069,7 @@
         </div>
     </div>
 
-    <!-- MOVIES MODAL -->
+    <!-- Movies Modal -->
     <div id="movie-modal" class="cert-modal-backdrop">
         <div class="cert-modal-content">
             <div class="fullscreen-modal-header">
@@ -1245,7 +1093,7 @@
         </div>
     </div>
 
-    <!-- GAMES MODAL -->
+    <!-- Games Modal -->
     <div id="game-modal" class="cert-modal-backdrop">
         <div class="cert-modal-content">
             <div class="fullscreen-modal-header">
@@ -1266,7 +1114,7 @@
         </div>
     </div>
 
-    <!-- WORKSPACE MODAL -->
+    <!-- Workspace Modal -->
     <div id="projects-modal" class="cert-modal-backdrop">
         <div class="cert-modal-content">
             <div class="fullscreen-modal-header">
@@ -1278,7 +1126,6 @@
             </div>
             <div class="fullscreen-modal-body">
                 <div class="fs-grid">
-                    <!-- TaskbarHS -->
                     <div class="fs-card">
                         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 0.5rem;"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
                         <h4 class="fs-card-title">TaskbarHS</h4>
@@ -1287,7 +1134,6 @@
                         <a href="https://github.com/avm3005/TaskbarHS" target="_blank" class="fs-card-action">GitHub</a>
                     </div>
                     
-                    <!-- SortFE -->
                     <div class="fs-card">
                         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 0.5rem;"><path d="M3 6h18"/><path d="M7 12h10"/><path d="M10 18h4"/></svg>
                         <h4 class="fs-card-title">SortFE</h4>
@@ -1296,7 +1142,6 @@
                         <a href="https://github.com/avm3005/SortFE" target="_blank" class="fs-card-action">GitHub</a>
                     </div>
                     
-                    <!-- MP3 to WAV -->
                     <div class="fs-card">
                         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 0.5rem;"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
                         <h4 class="fs-card-title">MP3 to WAV</h4>
@@ -1305,7 +1150,6 @@
                         <a href="#" target="_blank" class="fs-card-action">Download</a>
                     </div>
                     
-                    <!-- PNG to ICO -->
                     <div class="fs-card">
                         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 0.5rem;"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
                         <h4 class="fs-card-title">PNG to ICO</h4>
@@ -1314,7 +1158,6 @@
                         <a href="#" target="_blank" class="fs-card-action">Download</a>
                     </div>
 
-                    <!-- Portfolio Template -->
                     <div class="fs-card">
                         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 0.5rem;"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
                         <h4 class="fs-card-title">Portfolio Template</h4>
@@ -1327,13 +1170,13 @@
         </div>
     </div>
 
-    <!-- IMAGE VIEWER -->
+    <!-- Image Viewer -->
     <div id="image-viewer" class="image-viewer-backdrop">
         <button id="image-viewer-close" class="image-viewer-close"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
         <img id="image-viewer-img" class="image-viewer-img" src="" alt="Fullscreen Image">
     </div>
 
-    <!-- AURA CHATBOT / SPOTLIGHT -->
+    <!-- Aura Chatbot / Spotlight -->
     <div id="aura-modal" class="aura-backdrop">
         <div class="aura-container">
             <div class="aura-header">
@@ -1341,31 +1184,42 @@
                 <input type="text" id="aura-input" class="aura-input" placeholder="Ask Aura or search for anything..." autocomplete="off" spellcheck="false">
                 <div class="aura-badge">Ctrl K</div>
             </div>
-            <div id="aura-results" class="aura-results">
-                <!-- Results populated by JS -->
-            </div>
+            <div id="aura-results" class="aura-results"></div>
         </div>
     </div>
 
-    <!-- ==========================================
-        JAVASCRIPT LOGIC
-        ========================================== -->
+    <!-- Logic Script -->
     <script>
-        // LOADER
+        // Set dynamic Quote 
+        (function() {
+            const quotes = [
+                "I debug life by adding more bugs until the original one feels lonely",
+                "My code has two modes: Nobel Prize or nuclear accident",
+                "I write code so confusing even future me files bug reports",
+                "Sleep is just my CPU entering low-power mode",
+                "I don't make mistakes. I create undocumented features for character development",
+                "The only thing faster than my code is my confidence before production",
+                "God gave me free will. I gave it infinite loops"
+            ];
+            const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+            const quoteEl = document.getElementById('randomized-quote');
+            if (quoteEl) quoteEl.innerHTML = `"${randomQuote}"`;
+        })();
+
+        // Loader Sequence
         window.addEventListener('load', () => {
             const tipKey = document.getElementById('loader-tip-key');
             if (tipKey) {
                 const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0 || navigator.userAgent.includes('Mac');
                 tipKey.innerText = isMac ? 'Cmd' : 'Ctrl';
             }
-
             setTimeout(() => {
                 const loader = document.getElementById('liquid-loader');
                 if (loader) loader.classList.add('loader-hidden');
             }, 1600); 
         });
 
-        // CURSOR
+        // Custom Cursor Logic
         window.addEventListener('load', () => {
             const cursor = document.getElementById('custom-cursor');
             let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
@@ -1387,7 +1241,6 @@
                 el.addEventListener('mouseleave', () => cursor.classList.remove('cursor-hover'));
             });
 
-            // Prevent cursor morphing into text selector except for actual textboxes
             const textElements = document.querySelectorAll('input, textarea');
             textElements.forEach(el => {
                 el.addEventListener('mouseenter', () => cursor.classList.add('cursor-text'));
@@ -1395,30 +1248,26 @@
             });
         });
 
-        // =========================================================
-        // LIGHTWEIGHT ASYNC PROJECT PHOTO PRELOADER
-        // =========================================================
+        // Background Preloader
         document.addEventListener('DOMContentLoaded', () => {
             const projectImages = document.querySelectorAll('.project-bg[data-preload]');
             projectImages.forEach(img => {
                 const src = img.getAttribute('data-preload');
                 if (src) {
                     const tempImg = new Image();
-                    // decoding async prevents the main thread from blocking when processing the large pixels
                     tempImg.decoding = 'async'; 
                     tempImg.onload = () => {
                         requestAnimationFrame(() => {
                             img.src = src;
-                            img.classList.add('loaded'); // Fades image in smoothly
+                            img.classList.add('loaded');
                         });
                     };
-                    // Immediately fetch it in background directly after initialization
                     tempImg.src = src; 
                 }
             });
         });
 
-        // TIME STATS
+        // Time Stats
         function calculateAge(dobString) {
             const dob = new Date(dobString);
             const now = new Date();
@@ -1432,21 +1281,21 @@
                 days += prevMonth.getDate();
             }
             if (months < 0) { years--; months += 12; }
-            return `${years}Y ${months}M ${days}D`;
+            return { full: `${years}Y ${months}M ${days}D`, years: years.toString() };
         }
 
         const updateTimeStats = () => {
             const expElement = document.getElementById('exp-counter');
-            if (expElement) expElement.textContent = calculateAge('2025-11-08'); 
+            if (expElement) expElement.textContent = calculateAge('2025-11-08').full; 
             
-            const simpleAge = calculateAge('2006-05-30').split(' ')[0];
-            const aboutAgeElement = document.getElementById('about-age-text');
-            if (aboutAgeElement) aboutAgeElement.textContent = simpleAge;
+            const ageData = calculateAge('2006-05-30');
+            const aboutAgeBadge = document.getElementById('about-age-text');
+            if (aboutAgeBadge) aboutAgeBadge.textContent = ageData.years + "Y";
         };
         updateTimeStats();
         setInterval(updateTimeStats, 86400000); 
 
-        // GITHUB API
+        // GitHub API Integrations
         function animateValue(obj, target, duration, appendPlus=false) {
             if (!obj) return;
             if (target === 0) { obj.innerText = '0'; return; }
@@ -1510,42 +1359,19 @@
             }
         }
         
-        // Background load stats on window load
-        window.addEventListener('load', () => {
-            fetchGitHubStats();
-        });
+        window.addEventListener('load', () => { fetchGitHubStats(); });
 
-        // CONFETTI
-        const tipBtn = document.getElementById('dyn-contact-tip');
-        if (tipBtn) {
-            tipBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                const duration = 2000;
-                const end = Date.now() + duration;
-                const accentColor = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
-
-                (function frame() {
-                    confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 }, colors: [accentColor, '#ffffff'], zIndex: 10000 });
-                    confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 }, colors: [accentColor, '#ffffff'], zIndex: 10000 });
-                    if (Date.now() < end) requestAnimationFrame(frame);
-                }());
-            });
-        }
-
-        // SCROLL INTERACTIONS - DOM Caching for Performance
+        // Scroll Interactions
         const sections = document.querySelectorAll('section, .mono-bg'); 
         const navLinks = document.querySelectorAll('.nav-link');
         const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
         const dockContainer = document.querySelector('.dock-container');
         const dynamicActionsContainer = document.getElementById('dynamic-actions-container');
         
-        // Cached Elements for scroll performance
         const heroLine1 = document.getElementById('hero-line-1');
         const heroLine2 = document.getElementById('hero-line-2');
         const heroLine3 = document.getElementById('hero-line-3');
-        const timelineSection = document.getElementById('timeline');
         const projectsSection = document.getElementById('projects');
-        const slideContainer = document.getElementById('timeline-slides-container');
         const projectTrackElement = document.getElementById('projects-track');
         
         let targetProjectTx = 0, currentProjectTx = 0, currentProjectIndex = 0; 
@@ -1556,23 +1382,7 @@
             "https://avm3005.github.io/AMBS",
             "\\Projects\\FSPro\\down.zip"
         ];
-        const PROJECT_TEXTS = [
-            "View on Github",
-            "Visit AMBS",
-            "Download FSPro"
-        ];
-
-        // 7 FULL TIMELINE EVENTS (Replaced contact info with short description)
-        const timelineData = [
-            { year: "2006", title: "Born in Vapi", desc: "Born in Vapi on 30 May 2006.", refName: "Parents", refRole: "Family", refDesc: "I really don'tknow why you will need this but if you do, then it will be provided after contact." },
-            { year: "2020", title: "Secondary", desc: "Completed 10th in April 2020 from Ashadham School Vapi.", refName: "Principal", refRole: "Ashadham School", refDesc: "Information available after contact." },
-            { year: "2022", title: "Higher Secondary", desc: "Graduated from Upasana Lions School, Vapi with the highest percentage of marks in the entire school", refName: "Ms. Mayuri Shah", refRole: "Cordinator of Science Department, Upasana Lions", refDesc: "Guided me through 11th and 12th. Information will be provided after contact." },
-            { year: "2024", title: "Bachelor of Engineering", desc: "Started studying Computer Engineering at Dr. S. & S.S. Ghandhy Govt. Engineering College", refName: "Prof. Hardik Makwana", refRole: "HOD Computer Eng.", refDesc: "Guided me throughout college. Information will be provided after contact." },
-            { year: "2025", title: "First Commit", desc: "Made first GitHub commit on November 8th 2025.", refName: "GitHub Platform", refRole: "What do you even expect here!", refDesc: "The platform where I started building my open-source footprint." },
-            { year: "2026", title: "Societal Internship", desc: "Developed an efficient inventory management system at Sagar Steel, Vapi", refName: "Mr. Dinesh Chodhury", refRole: "Owner, Sagar Steel", refDesc: "Provided the industry problem statement and supervised the deployment of the ABMS inventory system." },
-            { year: "Present", title: "Continuing B.E.", desc: "Resumed studies in Computer Engineering in Dr. S. & S.S. Ghandhy Govt. Engineering College", refName: "Prof. Hardik Makwana", refRole: "Project Guide", refDesc: "Guided me throughout college. Information will be provided after contact." }
-        ];
-        let currentTimelineIndex = -1;
+        const PROJECT_TEXTS = ["View on Github", "Visit AMBS", "Download FSPro"];
 
         function uiLoop() {
             if (Math.abs(targetProjectTx - currentProjectTx) < 0.05) {
@@ -1621,7 +1431,7 @@
             });
         });
 
-        // Mobile Toggles
+        // Mobile Dock Controls
         document.getElementById('mobile-menu-btn').addEventListener('click', (e) => {
             e.stopPropagation();
             document.getElementById('mobile-menu-overlay').classList.toggle('open');
@@ -1629,6 +1439,7 @@
             document.getElementById('mobile-menu-btn').classList.toggle('active');
             document.getElementById('mobile-action-btn').classList.remove('active');
         });
+        
         document.getElementById('mobile-action-btn').addEventListener('click', (e) => {
             e.stopPropagation();
             dynamicActionsContainer.classList.toggle('mobile-open');
@@ -1637,7 +1448,7 @@
             document.getElementById('mobile-menu-btn').classList.remove('active');
         });
 
-        // Dock Observer
+        // Page Scroll Observer for sections
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -1665,7 +1476,7 @@
         }, { root: null, rootMargin: '-50% 0px -50% 0px', threshold: 0 }); 
         sections.forEach(sec => observer.observe(sec));
 
-        // Reveal Blocks
+        // Visibility Reveal (Only applied to remaining classes like Resume cards)
         const revealObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -1678,9 +1489,9 @@
                 }
             });
         }, { threshold: 0.15 });
-        document.querySelectorAll('.reveal-block, .bouncy-reveal').forEach(block => revealObserver.observe(block));
+        document.querySelectorAll('.reveal-block').forEach(block => revealObserver.observe(block));
 
-        // Resume Inner Menu
+        // Resume Sidebar highlight 
         const resumeObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -1694,11 +1505,11 @@
         }, { root: null, rootMargin: '-20% 0px -70% 0px', threshold: 0 });
         document.querySelectorAll('.resume-card').forEach(card => resumeObserver.observe(card));
 
+        // Global Page Scroll Handle
         const handleScroll = () => {
             const scrollY = window.scrollY;
             const winH = window.innerHeight;
 
-            // Parallax
             if (scrollY < winH && heroLine1 && heroLine2 && heroLine3) {
                 heroLine1.style.transform = `translate3d(${-scrollY * 0.8}px, 0, 0)`;
                 heroLine2.style.transform = `translate3d(${scrollY * 0.8}px, 0, 0)`;
@@ -1709,54 +1520,6 @@
             else dockContainer.classList.remove('at-top');
             updateDockHighlight();
 
-            // Timeline Scroll
-            if (timelineSection) {
-                const tRect = timelineSection.getBoundingClientRect();
-                if (tRect.top <= winH && tRect.bottom >= 0) {
-                    const tTotalScroll = tRect.height - winH;
-                    let tRawProgress = -tRect.top / tTotalScroll;
-                    tRawProgress = Math.max(0, Math.min(1, tRawProgress));
-
-                    let tIndex = Math.floor(tRawProgress * timelineData.length);
-                    if (tIndex >= timelineData.length) tIndex = timelineData.length - 1; // Clamp
-
-                    if (currentTimelineIndex !== tIndex) {
-                        currentTimelineIndex = tIndex;
-                        const data = timelineData[tIndex];
-                        
-                        const oldSlide = slideContainer.querySelector('.timeline-slide.active');
-                        if (oldSlide) {
-                            oldSlide.classList.remove('active');
-                            setTimeout(() => oldSlide.remove(), 600); 
-                        }
-                        
-                        const newSlide = document.createElement('div');
-                        newSlide.className = 'timeline-slide active';
-                        newSlide.innerHTML = `
-                            <span class="slide-date">${data.year}</span>
-                            <h4 class="slide-title">${data.title}</h4>
-                            <p class="slide-desc">${data.desc}</p>
-                        `;
-                        slideContainer.appendChild(newSlide);
-
-                        const refBtn = document.getElementById('dyn-references-trigger');
-                        if (refBtn) {
-                            const dynTimelineContainer = document.getElementById('dyn-timeline');
-                            if (dynTimelineContainer.classList.contains('active')) {
-                                refBtn.classList.add('collapsing');
-                                setTimeout(() => {
-                                    document.getElementById('dyn-references-text').innerText = `Ref: ${data.refName}`;
-                                    refBtn.classList.remove('collapsing');
-                                }, 150);
-                            } else {
-                                document.getElementById('dyn-references-text').innerText = `Ref: ${data.refName}`;
-                            }
-                        }
-                    }
-                }
-            }
-
-            // Projects Scroll
             if (projectsSection) {
                 const rect = projectsSection.getBoundingClientRect();
                 if (rect.top <= winH && rect.bottom >= 0) {
@@ -1764,12 +1527,11 @@
                     let rawProgress = -rect.top / totalScroll;
                     rawProgress = Math.max(0, Math.min(1, rawProgress));
                     
-                    // Pause phase at the end before leaving the section
                     if (rawProgress < 0.15) targetProjectTx = 0;
                     else if (rawProgress < 0.35) { let p = (rawProgress - 0.15) / 0.20; targetProjectTx = p * p * (3 - 2 * p) * -100; } 
                     else if (rawProgress < 0.55) targetProjectTx = -100;
                     else if (rawProgress < 0.75) { let p = (rawProgress - 0.55) / 0.20; targetProjectTx = -100 + (p * p * (3 - 2 * p) * -100); } 
-                    else targetProjectTx = -200; // From 0.75 to 1.0, the slider stays still (pause)
+                    else targetProjectTx = -200; 
                     
                     if (!isUiLoopRunning) { isUiLoopRunning = true; requestAnimationFrame(uiLoop); }
                     
@@ -1810,15 +1572,11 @@
         
         window.addEventListener('resize', updateDockHighlight);
         window.addEventListener('load', () => {
-            if(document.getElementById('timeline') && currentTimelineIndex === -1) {
-                const refBtnText = document.getElementById('dyn-references-text');
-                if (refBtnText) refBtnText.innerText = `Ref: ${timelineData[0].refName}`;
-            }
             handleScroll();
             setTimeout(updateDockHighlight, 100); 
         });
 
-        // MODALS
+        // Modal Helpers
         function openModal(modalId) {
             const m = document.getElementById(modalId);
             if(m) { m.classList.add('open'); document.body.style.overflow = 'hidden'; }
@@ -1842,7 +1600,6 @@
             });
         });
 
-        // Detailed Project Actions
         const PROJECT_DETAILS = [
             {
                 title: "Dark switch",
@@ -1895,7 +1652,7 @@
             });
         });
 
-        // Certificates Folder Hook
+        // Trigger Listeners
         document.getElementById('dyn-cert-trigger').addEventListener('click', () => openModal('cert-modal'));
         
         const certImages = {
@@ -1919,7 +1676,7 @@
                 certImages[folder].forEach(imgName => {
                     const img = document.createElement('img');
                     img.src = folderPath + imgName;
-                    img.loading = "lazy"; // ensures dynamic images don't block
+                    img.loading = "lazy";
                     img.decoding = "async";
                     img.onerror = () => { img.src = `https://placehold.co/400x300/1d1d1f/86868b?text=Missing+File:+${imgName}`; };
                     img.addEventListener('click', () => {
@@ -1934,66 +1691,42 @@
             });
         });
 
-        // Other Triggers
         document.querySelector('.dyn-social-btn.movie').addEventListener('click', (e) => { e.preventDefault(); openModal('movie-modal'); });
         document.querySelector('.dyn-social-btn.game').addEventListener('click', (e) => { e.preventDefault(); openModal('game-modal'); });
         document.getElementById('dyn-projects-all').addEventListener('click', () => openModal('projects-modal'));
-        document.getElementById('dyn-summarize-trigger').addEventListener('click', () => openModal('summary-modal'));
+        document.getElementById('dyn-timeline-data-trigger').addEventListener('click', () => openModal('timeline-data-modal'));
         document.getElementById('dyn-download-modal-trigger').addEventListener('click', () => openModal('download-modal'));
 
         const statsTrigger = document.getElementById('dyn-stats-trigger');
         if(statsTrigger) {
-            statsTrigger.addEventListener('click', () => {
-                openModal('stats-modal');
-            });
+            statsTrigger.addEventListener('click', () => openModal('stats-modal'));
         }
 
-        const refTrigger = document.getElementById('dyn-references-trigger');
-        if (refTrigger) {
-            refTrigger.addEventListener('click', () => {
-                const d = timelineData[Math.max(0, currentTimelineIndex)];
-                document.getElementById('ref-modal-name').innerText = d.refName;
-                document.getElementById('ref-modal-role').innerText = d.refRole;
-                document.getElementById('ref-desc-text').innerText = d.refDesc;
-                openModal('references-modal');
-            });
-        }
-
-        // Image Viewer
         const imageViewer = document.getElementById('image-viewer');
         const closeImageViewer = () => imageViewer.classList.remove('open');
         document.getElementById('image-viewer-close').addEventListener('click', closeImageViewer);
         imageViewer.addEventListener('click', (e) => { if (e.target === imageViewer) closeImageViewer(); });
 
-        // =========================================================
-        // AURA (SPOTLIGHT CHATBOT) LOGIC
-        // =========================================================
+        // Aura Chatbot Module
         const auraModal = document.getElementById('aura-modal');
         const auraInput = document.getElementById('aura-input');
         const auraResults = document.getElementById('aura-results');
         let auraSelectedIndex = 0;
         let currentAuraItems = [];
 
-        // Aura's "Brain" - Navigations, Actions, and Q&A
         const auraKnowledgeBase = [
-            // Navigation
             { type: 'nav', title: 'Home', subtitle: 'Go to the landing section', tags: ['start', 'top', 'beginning', 'welcome'], action: () => document.getElementById('home').scrollIntoView({behavior: 'smooth'}) },
             { type: 'nav', title: 'About Me', subtitle: 'Read my bio and background', tags: ['who', 'profile', 'bio', 'info', 'person'], action: () => document.getElementById('about').scrollIntoView({behavior: 'smooth'}) },
             { type: 'nav', title: 'Projects', subtitle: 'View my portfolio and creations', tags: ['work', 'code', 'apps', 'development', 'portfolio'], action: () => document.getElementById('projects').scrollIntoView({behavior: 'smooth'}) },
             { type: 'nav', title: 'Resume', subtitle: 'Check my experience and skills', tags: ['cv', 'experience', 'education', 'skills', 'achievements', 'job', 'career'], action: () => document.getElementById('resume').scrollIntoView({behavior: 'smooth'}) },
             { type: 'nav', title: 'Contact', subtitle: 'Get my email and social links', tags: ['email', 'hire', 'reach', 'message', 'social', 'linkedin', 'github', 'instagram'], action: () => document.getElementById('contact').scrollIntoView({behavior: 'smooth'}) },
-            { type: 'nav', title: 'Timeline', subtitle: 'My life journey and milestones', tags: ['history', 'journey', 'life', 'story', 'born'], action: () => document.getElementById('timeline').scrollIntoView({behavior: 'smooth'}) },
-            
-            // Actions
             { type: 'action', title: 'Download Resume', subtitle: 'Get a PDF copy of my CV', tags: ['pdf', 'download cv', 'get resume', 'offline'], action: () => openModal('download-modal') },
             { type: 'action', title: 'View Dashboard & Stats', subtitle: 'Open my professional metrics', tags: ['analytics', 'dashboard', 'metrics', 'github stats', 'commits', 'loc'], action: () => { openModal('stats-modal'); fetchGitHubStats(); } },
             { type: 'action', title: 'My Workspace', subtitle: 'Tools and side scripts', tags: ['setup', 'tools', 'gear', 'powershell', 'taskbar'], action: () => openModal('projects-modal') },
             { type: 'action', title: 'View Certificates', subtitle: 'Proof of my achievements', tags: ['awards', 'proof', 'marksheet', 'degrees'], action: () => openModal('cert-modal') },
             { type: 'action', title: 'Movie Recommendations', subtitle: 'Series I love watching', tags: ['watch', 'series', 'tv', 'shows', 'entertainment'], action: () => openModal('movie-modal') },
             { type: 'action', title: 'Game Recommendations', subtitle: 'Videogames I recommend', tags: ['play', 'videogames', 'gaming', 'rdr2', 'gta'], action: () => openModal('game-modal') },
-            { type: 'action', title: 'Summarize Profile', subtitle: 'Quick career highlights', tags: ['tldr', 'summary', 'short', 'brief'], action: () => openModal('summary-modal') },
-
-            // Q&A
+            { type: 'action', title: 'Timeline', subtitle: 'View timeline & references', tags: ['tldr', 'timeline', 'references', 'history'], action: () => openModal('timeline-data-modal') },
             { type: 'qa', title: 'Who is Archit?', subtitle: 'I am a Computer Engineering student from Vapi, Gujarat, passionate about building software and creating functional UI/UX.', tags: ['who are you', 'tell me about yourself', 'yourself'] },
             { type: 'qa', title: 'What are your skills?', subtitle: 'I specialize in Python scripting, Data Cleaning/Analysis, Web Development, and creating responsive User Interfaces.', tags: ['what can you do', 'technologies', 'stack', 'languages', 'programming'] },
             { type: 'qa', title: 'How old are you?', subtitle: 'I am 20 years old. I was born on May 30, 2006.', tags: ['age', 'birth', 'birthday', 'how old'] },
@@ -2022,10 +1755,7 @@
             currentAuraItems = items;
             
             if (items.length === 0) {
-                auraResults.innerHTML = `
-                    <div style="padding: 2rem; text-align: center; color: var(--text-muted); font-family: var(--font-sans);">
-                        No matches found. Try asking something else.
-                    </div>`;
+                auraResults.innerHTML = `<div style="padding: 2rem; text-align: center; color: var(--text-muted); font-family: var(--font-sans);">No matches found. Try asking something else.</div>`;
                 return;
             }
 
@@ -2082,7 +1812,6 @@
             const query = auraInput.value.toLowerCase().trim();
             
             if (!query) {
-                // Default view: Mix of Navs and Actions
                 renderAuraResults(auraKnowledgeBase.filter(i => i.type !== 'qa').slice(0, 6));
                 auraSelectedIndex = 0;
                 return;
@@ -2096,22 +1825,19 @@
                 terms.forEach(term => {
                     if (searchableString.includes(term)) {
                         score += 1;
-                        // Give extra weight to exact title matches
                         if (item.title.toLowerCase().includes(term)) score += 2;
-                        // Extra weight for exact tag matches
                         if (item.tags.some(tag => tag.includes(term))) score += 1;
                     }
                 });
                 return { ...item, score };
             }).filter(item => item.score > 0)
-              .sort((a, b) => b.score - a.score)
-              .slice(0, 8); // Top 8 results
+            .sort((a, b) => b.score - a.score)
+            .slice(0, 8);
 
             auraSelectedIndex = 0;
             renderAuraResults(scoredItems);
         }
 
-        // Open Aura via Ctrl+K / Cmd+K
         document.addEventListener('keydown', (e) => {
             if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
                 e.preventDefault();
@@ -2126,23 +1852,20 @@
             }
         });
 
-        // Close Aura on Escape or Click outside
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && auraModal.classList.contains('open')) {
                 closeModal(auraModal);
             }
         });
+        
         auraModal.addEventListener('click', (e) => {
             if (e.target === auraModal) closeModal(auraModal);
         });
 
-        // Search Input event
         auraInput.addEventListener('input', handleAuraSearch);
 
-        // Keyboard Navigation in Aura
         auraInput.addEventListener('keydown', (e) => {
             if (!auraModal.classList.contains('open') || currentAuraItems.length === 0) return;
-
             if (e.key === 'ArrowDown') {
                 e.preventDefault();
                 auraSelectedIndex = (auraSelectedIndex + 1) % currentAuraItems.length;
